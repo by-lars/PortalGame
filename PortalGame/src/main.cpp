@@ -1,4 +1,4 @@
-#include "Util/Defines.h"
+#include "Core/Base.h"
 #include "Core/Game.h"
 
 int main() {
@@ -12,7 +12,7 @@ int main() {
 		return EXIT_FAILURE;
 	}
 
-	while (!glfwWindowShouldClose(game.window)) {
+	while (game.ShouldRun()) {
 		game.Loop();
 	}
 

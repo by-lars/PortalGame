@@ -1,5 +1,5 @@
 #include "Core/Game.h"
-#include "Util/Defines.h"
+#include "Core/Base.h"
 
 
 #include "OpenGL/Shader.h"
@@ -24,7 +24,10 @@ namespace PGame {
 	{}
 
 	Game::~Game() {
+	}
 
+	bool Game::ShouldRun() {
+		return !glfwWindowShouldClose(window);
 	}
 
 	bool Game::Init() {
@@ -73,8 +76,9 @@ namespace PGame {
 			pgError("Coudl not open file :(");
 		}
 
+		auto shader = std::make_shared<GL::Shader>();
 
-		GL::Shader* shader = new GL::Shader();
+		shaders.emplace_back(shader);
 
 		file.seekg(0, std::ios::end);
 
@@ -83,8 +87,8 @@ namespace PGame {
 
 		file.seekg(0, std::ios::beg);
 		file.read(&source[0], size);
-		shader->Load(source);
-		shader->Use();
+		shaders[0].Load(source);
+		shaders[0].Use();
 
 		return PG_SUCCESS;
 	}

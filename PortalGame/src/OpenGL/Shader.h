@@ -12,6 +12,7 @@ namespace PGame {
 		class Shader {
 		public:
 			Shader();
+			Shader(const Shader&) = default;
 			~Shader();
 
 			bool Load(const std::string& source);

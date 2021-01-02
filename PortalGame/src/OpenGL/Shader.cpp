@@ -1,5 +1,5 @@
 #include "OpenGL/Shader.h"
-#include "Util/Defines.h"
+#include "Core/Base.h"
 #include "Util/StringHelper.h"
 
 #include <glad/glad.h>

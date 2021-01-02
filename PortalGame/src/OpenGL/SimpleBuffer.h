@@ -7,6 +7,8 @@ namespace PGame {
 		public:
 			SimpleBuffer();
 			~SimpleBuffer();
+
+
 		};
 	}
 }

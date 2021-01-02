@@ -2,7 +2,6 @@
 #define _PG_UTIL_DEFINES_H_
 
 #include <iostream>
-#include <filesystem>
 
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
