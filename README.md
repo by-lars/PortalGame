@@ -1,2 +1,2 @@
 # Portal Game
-This is my game / engine projects. The goal is to support the rendering of Portals.
+A game / engine project. The goal is to support the rendering of Portals.
