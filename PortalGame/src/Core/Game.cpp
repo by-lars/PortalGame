@@ -1,10 +1,10 @@
 #include "Core/Game.h"
 #include "Core/Base.h"
 
-
 #include "OpenGL/Shader.h"
 
 #include <fstream>
+#include <cmath>
 
 namespace PGame {
 	void APIENTRY OnOpenGLDebugMessage(GLenum source, GLenum type, unsigned int id, GLenum severity,
@@ -75,11 +75,6 @@ namespace PGame {
 		if (!file) {
 			pgError("Coudl not open file :(");
 		}
-
-		auto shader = std::make_shared<GL::Shader>();
-
-		shaders.emplace_back(shader);
-
 		file.seekg(0, std::ios::end);
 
 		size_t size = file.tellg();
@@ -87,13 +82,33 @@ namespace PGame {
 
 		file.seekg(0, std::ios::beg);
 		file.read(&source[0], size);
-		shaders[0].Load(source);
-		shaders[0].Use();
+
+
+		shader = CreateRef<GL::Shader>();
+		shader->Load(source);
+		shader->Use();
+
+		buffer = CreateRef<GL::SimpleBuffer>(sizeof(vertices));
+		buffer->Upload(vertices, sizeof(vertices));
+
+		buffer->SetFormat({ GL::BufferElement(GL_FLOAT, 3), GL::BufferElement(GL_FLOAT, 3) });
+
+		buffer->Bind();
 
 		return PG_SUCCESS;
 	}
 
 	void Game::Loop() {
+		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		vertices[0] = cosf(glfwGetTime());
+		vertices[4] = tanf(glfwGetTime());
+		vertices[7] = sinf(glfwGetTime());
+		buffer->Upload(vertices, sizeof(vertices));
+
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

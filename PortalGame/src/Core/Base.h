@@ -2,6 +2,8 @@
 #define _PG_UTIL_DEFINES_H_
 
 #include <iostream>
+#include <string.h>
+#include <memory>
 
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
@@ -20,7 +22,6 @@
 #define PG_FG_BLU "\x1B[94m"
 #define PG_FG_MGT "\x1B[96m"
 
-#include <string.h>
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 
 #define pgInfo(msg)	  std::cout << PG_FG_BLU << "[INFO] " << msg << PG_CL_RST << std::endl
@@ -32,5 +33,25 @@
 #else
 #define pgDebug(msg)
 #endif //PG_DEBUG_LOG
+
+namespace PGame {
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+
+	template<typename T, typename ... Args>
+	constexpr Scope<T> CreateScope(Args&& ... args)
+	{
+		return std::make_unique<T>(std::forward<Args>(args)...);
+	}
+
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+
+	template<typename T, typename ... Args>
+	constexpr Ref<T> CreateRef(Args&& ... args)
+	{
+		return std::make_shared<T>(std::forward<Args>(args)...);
+	}
+}
 
 #endif

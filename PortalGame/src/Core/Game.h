@@ -4,10 +4,12 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <string>
-
-#include "OpenGL/Shader.h"
-
 #include <vector>
+
+#include "Core/Base.h"
+#include "OpenGL/Shader.h"
+#include "OpenGL/SimpleBuffer.h"
+
 
 
 namespace PGame {
@@ -21,8 +23,16 @@ namespace PGame {
 		bool Init();
 		void Loop();
 
-		std::vector<GL::Shader> shaders;
+		float vertices[18] = {
+			// positions         
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f , 0.0f,
+			-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+			 0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f
+		};
 
+
+		Ref<GL::SimpleBuffer> buffer;
+		Ref<GL::Shader> shader;
 	public:
 		GLFWwindow* window;
 		std::string title;

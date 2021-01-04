@@ -173,8 +173,9 @@
   <ItemGroup>
     <ClCompile Include="ext\glad\src\glad.c" />
     <ClCompile Include="src\Core\Game.cpp" />
-    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Core\main.cpp" />
     <ClCompile Include="src\OpenGL\Shader.cpp" />
+    <ClCompile Include="src\OpenGL\SimpleBuffer.cpp" />
     <ClCompile Include="src\Util\StringHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +186,7 @@
     <ClInclude Include="src\OpenGL\SimpleBuffer.h" />
     <ClInclude Include="src\Core\Base.h" />
     <ClInclude Include="src\Util\StringHelper.h" />
+    <ClInclude Include="src\Util\Types.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shader\testshader.glsl">
