@@ -73,25 +73,25 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
-    <IntDir>$(SolutionDir)bin\objects\$(Configuration)\$(Platform)\</IntDir>
+    <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
     <IncludePath>$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
-    <IntDir>$(SolutionDir)bin\objects\$(Configuration)\$(Platform)\</IntDir>
+    <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
     <IncludePath>$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
-    <IntDir>$(SolutionDir)bin\objects\$(Configuration)\$(Platform)\</IntDir>
+    <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
     <IncludePath>$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
-    <IntDir>$(SolutionDir)bin\objects\$(Configuration)\$(Platform)\</IntDir>
+    <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
     <IncludePath>$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -172,8 +172,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ext\glad\src\glad.c" />
+    <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\Game.cpp" />
-    <ClCompile Include="src\Core\main.cpp" />
+    <ClCompile Include="src\Core\EntryPoint.h" />
+    <ClCompile Include="src\ECS\ECS.cpp" />
+    <ClCompile Include="src\ECS\ECSDefs.cpp" />
     <ClCompile Include="src\OpenGL\Shader.cpp" />
     <ClCompile Include="src\OpenGL\SimpleBuffer.cpp" />
     <ClCompile Include="src\Util\StringHelper.cpp" />
@@ -181,7 +184,11 @@
   <ItemGroup>
     <ClInclude Include="ext\glad\include\glad\glad.h" />
     <ClInclude Include="ext\glad\include\KHR\khrplatform.h" />
-    <ClInclude Include="src\Core\Game.h" />
+    <ClInclude Include="src\Core\Application.h" />
+    <ClInclude Include="src\ECS\ComponentPool.h" />
+    <ClInclude Include="src\ECS\ECS.h" />
+    <ClInclude Include="src\ECS\ECSDefs.h" />
+    <ClInclude Include="src\ECS\ComponentArray.h" />
     <ClInclude Include="src\OpenGL\Shader.h" />
     <ClInclude Include="src\OpenGL\SimpleBuffer.h" />
     <ClInclude Include="src\Core\Base.h" />

@@ -1,5 +1,5 @@
-#ifndef _PGAME_UTIL_STRINGHELPER_H_
-#define _PGAME_UTIL_STRINGHELPER_H_
+#ifndef PG_UTIL_STRINGHELPER_H
+#define PG_UTIL_STRINGHELPER_H
 
 #include <string>
 

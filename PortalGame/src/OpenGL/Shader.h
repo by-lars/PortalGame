@@ -1,5 +1,5 @@
-#ifndef _PG_OPENGL_SHADER_H_
-#define _PG_OPENGL_SHADER_H_
+#ifndef PG_OPENGL_SHADER_H
+#define PG_OPENGL_SHADER_H
 
 #include "Util/Types.h"
 

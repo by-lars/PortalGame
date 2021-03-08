@@ -1,9 +1,10 @@
-#ifndef _PG_UTIL_DEFINES_H_
-#define _PG_UTIL_DEFINES_H_
+#ifndef PG_CORE_BASE_H
+#define PG_CORE_BASE_H
 
 #include <iostream>
 #include <string.h>
 #include <memory>
+#include <cassert>
 
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
@@ -27,6 +28,9 @@
 #define pgInfo(msg)	  std::cout << PG_FG_BLU << "[INFO] " << msg << PG_CL_RST << std::endl
 #define pgWarn(msg)	  std::cout << PG_FG_YLO << "[WARN] " << msg << PG_CL_RST << std::endl
 #define pgError(msg)  std::cout << PG_FG_RED << "[ERROR] " << msg << PG_CL_RST << std::endl
+
+#define pgAssert(test, msg) if(!(test)) {pgError(__FILENAME__ << "(" << __LINE__ << "): " << STR_HELPER(test) << " -> " << msg); return PG_FAILURE;}
+#define pgTest(test, msg) if(!(test)) {pgError(__FILENAME__ << "(" << __LINE__ << "): " << STR_HELPER(test) << " -> " << msg); return PG_FAILURE;}
 
 #ifdef _DEBUG 
 #define pgDebug(msg) std::cout << PG_FG_MGT << "[DEBUG] " << __FILENAME__ << "(" << __LINE__ << "): " << msg << PG_CL_RST << std::endl

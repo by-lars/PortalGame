@@ -30,14 +30,20 @@
     <ClCompile Include="src\OpenGL\SimpleBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\main.cpp">
+    <ClCompile Include="src\ECS\ECS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\EntryPoint.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\ECSDefs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Core\Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\OpenGL\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -57,6 +63,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Util\Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ECS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ECSDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\ComponentArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

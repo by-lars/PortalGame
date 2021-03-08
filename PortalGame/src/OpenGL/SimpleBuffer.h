@@ -1,5 +1,5 @@
-#ifndef _PG_OPENGL_SIMPLEBUFFER_H_
-#define _PG_OPENGL_SIMPLEBUFFER_H_
+#ifndef PG_OPENGL_SIMPLEBUFFER_H
+#define PG_OPENGL_SIMPLEBUFFER_H
 
 #include "Util/Types.h"
 
@@ -25,7 +25,7 @@ namespace PGame {
 			~SimpleBuffer();
 
 			void Upload(float* verts, uint32_t size) const;
-			void SetFormat(std::initializer_list<GL::BufferElement> format) const;
+			void SetFormat(std::initializer_list<BufferElement> format) const;
 
 			void Bind() const;
 			void Unbind() const;

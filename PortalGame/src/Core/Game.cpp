@@ -1,115 +1,101 @@
-#include "Core/Game.h"
+#include <cmath>
+#include <fstream>
+
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include "Core/Base.h"
+#include "Core/Application.h"
 
 #include "OpenGL/Shader.h"
-
-#include <fstream>
-#include <cmath>
+#include "OpenGL/SimpleBuffer.h"
+#include "ECS/ComponentArray.h"
+#include "ECS/ComponentPool.h"
 
 namespace PGame {
-	void APIENTRY OnOpenGLDebugMessage(GLenum source, GLenum type, unsigned int id, GLenum severity,
-		GLsizei length, const char* message, const void* userParam) {
-		switch (severity) {
-			case GL_DEBUG_SEVERITY_HIGH:			pgError(message); return;
-			case GL_DEBUG_SEVERITY_MEDIUM:			pgError(message); return;
-			case GL_DEBUG_SEVERITY_LOW:				pgWarn(message); return;
-			case GL_DEBUG_SEVERITY_NOTIFICATION:	pgInfo(message); return;
-			default:								pgInfo(message); return;
-		}
-	}
+	class Game : public Application {
+	public:
+		float vertices[18] = {
+			// positions         
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f , 0.0f,
+			-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+			 0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f
+		};
 
+		Ref<GL::SimpleBuffer> buffer;
+		Ref<GL::Shader> shader;
 
-	Game::Game(int windowWidth, int windowHeight, const std::string& windowTitle)
-		: width(windowWidth), height(windowHeight), title(windowTitle) 
-	{}
-
-	Game::~Game() {
-	}
-
-	bool Game::ShouldRun() {
-		return !glfwWindowShouldClose(window);
-	}
-
-	bool Game::Init() {
-		glfwInit();
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	#ifdef _DEBUG
-		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
-	#endif 
-
-		window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
-		if (window == NULL) {
-			pgError("Could not initialize window");
-			glfwTerminate();
-			return PG_FAILURE;
+		Game() {
+			buffer = CreateRef<GL::SimpleBuffer>(sizeof(vertices));
+			shader = CreateRef<GL::Shader>();
 		}
 
-		glfwMakeContextCurrent(window);
+		virtual bool Init() override {
+			pgInfo("Init");
+			std::ifstream file("assets/shader/testshader.glsl");
 
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-			pgError("Could not load OpenGL extensions");
-			glfwTerminate();
-			return PG_FAILURE;
+			if (!file) {
+				pgError("Coudl not open file :(");
+				return PG_FAILURE;
+			}
+
+			file.seekg(0, std::ios::end);
+			size_t size = file.tellg();
+			std::string source(size, ' ');
+
+			file.seekg(0, std::ios::beg);
+			file.read(&source[0], size);
+
+			shader->Load(source);
+			shader->Use();
+
+			buffer->Upload(vertices, sizeof(vertices));
+			buffer->SetFormat({ GL::BufferElement(GL_FLOAT, 3), GL::BufferElement(GL_FLOAT, 3) });
+			buffer->Bind();
+
+			ECS::ComponentArray<int> mySet;
+			mySet.Insert(0, 123);
+			mySet.Insert(1, 423);
+			mySet.Insert(2, 444);
+			mySet.Erase(1);
+			mySet.Insert(850, 4467);
+			mySet.Insert(851, 1234);
+			mySet.Erase(0);
+			mySet.Insert(15, 69);
+			mySet.Insert(16, 69);
+			mySet.Insert(17, 69);
+			mySet.Insert(18, 69);
+			mySet.Insert(19, 69);
+			mySet.Insert(20, 69);
+			mySet.Insert(21, 69);
+
+			ECS::ComponentPool pool;
+			pool.RegisterComponent<int>();
+			pool.RegisterComponent<float>();
+			pool.RegisterComponent<float>();
+
+
+			pgInfo(mySet.Get(0));
+
+			return PG_SUCCESS;
 		}
 
-		glViewport(0, 0, width, height);
+		virtual void Update() override {
+			glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
 
-	#ifdef _DEBUG
-		glEnable(GL_DEBUG_OUTPUT);
-		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-		glDebugMessageCallback(OnOpenGLDebugMessage, nullptr);
-		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
-	#endif
+			vertices[0] = cos(glfwGetTime());
+			vertices[4] = tan(glfwGetTime());
+			vertices[7] = sin(glfwGetTime());
+			buffer->Upload(vertices, sizeof(vertices));
 
-		std::cout << std::endl;
-		pgInfo("System Information");
-		pgInfo("	GL Renderer:  " << glGetString(GL_RENDERER));
-		pgInfo("	GL Version:   " << glGetString(GL_VERSION));
-		pgInfo("	GLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION));
-		std::cout << std::endl;
+			glDrawArrays(GL_TRIANGLES, 0, 3);
 
-		std::ifstream file("assets/shader/testshader.glsl");
-
-		if (!file) {
-			pgError("Coudl not open file :(");
+			Application::Update();
 		}
-		file.seekg(0, std::ios::end);
+	};
 
-		size_t size = file.tellg();
-		std::string source(size, ' ');
-
-		file.seekg(0, std::ios::beg);
-		file.read(&source[0], size);
-
-
-		shader = CreateRef<GL::Shader>();
-		shader->Load(source);
-		shader->Use();
-
-		buffer = CreateRef<GL::SimpleBuffer>(sizeof(vertices));
-		buffer->Upload(vertices, sizeof(vertices));
-
-		buffer->SetFormat({ GL::BufferElement(GL_FLOAT, 3), GL::BufferElement(GL_FLOAT, 3) });
-
-		buffer->Bind();
-
-		return PG_SUCCESS;
-	}
-
-	void Game::Loop() {
-		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		vertices[0] = cosf(glfwGetTime());
-		vertices[4] = tanf(glfwGetTime());
-		vertices[7] = sinf(glfwGetTime());
-		buffer->Upload(vertices, sizeof(vertices));
-
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+	Application* CreateApplication() {
+		return new Game();
 	}
 }
