@@ -78,6 +78,12 @@
     <ClCompile Include="ext\glfw\src\osmesa_context.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ext\glfw\src\vulkan.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\glfw\src\monitor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\OpenGL\Shader.h">
@@ -125,8 +131,26 @@
     <ClInclude Include="ext\glfw\src\win32_platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ext\glfw\src\wgl_context.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\glfw\src\egl_context.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\glfw\src\osmesa_context.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\glfw\src\internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ext\glfw\src\mappings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="assets\shader\testshader.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ext\glfw\src\mappings.h.in" />
   </ItemGroup>
 </Project>

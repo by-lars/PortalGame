@@ -212,7 +212,9 @@
     <ClCompile Include="ext\glfw\src\egl_context.c" />
     <ClCompile Include="ext\glfw\src\init.c" />
     <ClCompile Include="ext\glfw\src\input.c" />
+    <ClCompile Include="ext\glfw\src\monitor.c" />
     <ClCompile Include="ext\glfw\src\osmesa_context.c" />
+    <ClCompile Include="ext\glfw\src\vulkan.c" />
     <ClCompile Include="ext\glfw\src\wgl_context.c" />
     <ClCompile Include="ext\glfw\src\win32_init.c" />
     <ClCompile Include="ext\glfw\src\win32_joystick.c" />
@@ -232,6 +234,11 @@
   <ItemGroup>
     <ClInclude Include="ext\glad\include\glad\glad.h" />
     <ClInclude Include="ext\glad\include\KHR\khrplatform.h" />
+    <ClInclude Include="ext\glfw\src\egl_context.h" />
+    <ClInclude Include="ext\glfw\src\internal.h" />
+    <ClInclude Include="ext\glfw\src\mappings.h" />
+    <ClInclude Include="ext\glfw\src\osmesa_context.h" />
+    <ClInclude Include="ext\glfw\src\wgl_context.h" />
     <ClInclude Include="ext\glfw\src\win32_joystick.h" />
     <ClInclude Include="ext\glfw\src\win32_platform.h" />
     <ClInclude Include="src\Core\Application.h" />
@@ -258,6 +265,9 @@
       <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">assets/shader/%(Filename)%(Extension)</DestinationFileName>
       <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">assets/shader/%(Filename)%(Extension)</DestinationFileName>
     </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ext\glfw\src\mappings.h.in" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
