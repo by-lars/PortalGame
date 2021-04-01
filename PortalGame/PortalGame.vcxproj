@@ -27,26 +27,26 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -74,31 +74,31 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLFW_DLL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -110,6 +110,15 @@
       <AdditionalLibraryDirectories>$(ProjectDir)ext\glfw\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+    </Lib>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -117,7 +126,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLFW_DLL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -131,12 +140,21 @@
       <AdditionalLibraryDirectories>$(ProjectDir)ext\glfw\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+    </Lib>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLFW_DLL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -148,6 +166,15 @@
       <AdditionalLibraryDirectories>$(ProjectDir)ext\glfw\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+    </Lib>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -155,7 +182,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLFW_DLL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_GLFW_WIN32;_GLFW_WGL;_GLFW_USE_OPENGL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -169,13 +196,34 @@
       <AdditionalLibraryDirectories>$(ProjectDir)ext\glfw\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+    </Lib>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ext\glad\src\glad.c" />
+    <ClCompile Include="ext\glfw\src\context.c" />
+    <ClCompile Include="ext\glfw\src\egl_context.c" />
+    <ClCompile Include="ext\glfw\src\init.c" />
+    <ClCompile Include="ext\glfw\src\input.c" />
+    <ClCompile Include="ext\glfw\src\osmesa_context.c" />
+    <ClCompile Include="ext\glfw\src\wgl_context.c" />
+    <ClCompile Include="ext\glfw\src\win32_init.c" />
+    <ClCompile Include="ext\glfw\src\win32_joystick.c" />
+    <ClCompile Include="ext\glfw\src\win32_monitor.c" />
+    <ClCompile Include="ext\glfw\src\win32_thread.c" />
+    <ClCompile Include="ext\glfw\src\win32_time.c" />
+    <ClCompile Include="ext\glfw\src\win32_window.c" />
+    <ClCompile Include="ext\glfw\src\window.c" />
     <ClCompile Include="src\Core\Application.cpp" />
-    <ClCompile Include="src\Core\Game.cpp" />
     <ClCompile Include="src\Core\EntryPoint.h" />
-    <ClCompile Include="src\ECS\ECS.cpp" />
+    <ClCompile Include="src\ECS\Scene.cpp" />
     <ClCompile Include="src\ECS\ECSDefs.cpp" />
     <ClCompile Include="src\OpenGL\Shader.cpp" />
     <ClCompile Include="src\OpenGL\SimpleBuffer.cpp" />
@@ -184,9 +232,12 @@
   <ItemGroup>
     <ClInclude Include="ext\glad\include\glad\glad.h" />
     <ClInclude Include="ext\glad\include\KHR\khrplatform.h" />
+    <ClInclude Include="ext\glfw\src\win32_joystick.h" />
+    <ClInclude Include="ext\glfw\src\win32_platform.h" />
     <ClInclude Include="src\Core\Application.h" />
     <ClInclude Include="src\ECS\ComponentPool.h" />
-    <ClInclude Include="src\ECS\ECS.h" />
+    <ClInclude Include="src\ECS\Components\Base.h" />
+    <ClInclude Include="src\ECS\Scene.h" />
     <ClInclude Include="src\ECS\ECSDefs.h" />
     <ClInclude Include="src\ECS\ComponentArray.h" />
     <ClInclude Include="src\OpenGL\Shader.h" />
@@ -196,18 +247,16 @@
     <ClInclude Include="src\Util\Types.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\shader\testshader.glsl">
+    <CopyFileToFolders Include="assets\shader\testshader.glsl">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
-    <CopyFileToFolders Include="ext\glfw\lib-vc2019\glfw3.dll">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <FileType>Document</FileType>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
+      <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">assets/shader/%(Filename)%(Extension)</DestinationFileName>
+      <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">assets/shader/%(Filename)%(Extension)</DestinationFileName>
+      <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">assets/shader/%(Filename)%(Extension)</DestinationFileName>
+      <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">assets/shader/%(Filename)%(Extension)</DestinationFileName>
     </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
