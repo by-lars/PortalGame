@@ -1,0 +1,6 @@
+[submodule "PortalGame/ext/glfw"]
+	path = PortalGame/ext/glfw
+	url = https://github.com/glfw/glfw
+[submodule "PortalGame/ext/glm"]
+	path = PortalGame/ext/glm
+	url = https://github.com/g-truc/glm
