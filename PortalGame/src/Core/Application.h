@@ -8,7 +8,7 @@ typedef struct GLFWwindow GLFWwindow;
 namespace PGame {
 	class Application {
 	public:
-		Application(const std::string& = "PGame");
+		Application(const std::string& name, size_t width, size_t height);
 		virtual ~Application();
 
 		virtual bool Init() = 0;
