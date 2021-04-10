@@ -1,7 +1,4 @@
-#ifndef PG_UTIL_TYPES_H
-#define PG_UTIL_TYPES_H
+#pragma once
 
 typedef unsigned int GLuint;
 typedef unsigned int GLenum;
-
-#endif

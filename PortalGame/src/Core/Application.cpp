@@ -7,7 +7,7 @@
 namespace PGame {
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application(const std::string& name, size_t width, size_t height) {
+	Application::Application(const std::string& name) {
 		s_Instance = this;
 		IsRunning = true;
 

@@ -1,5 +1,4 @@
-#ifndef PG_ECS_SCENE_H
-#define PG_ECS_SCENE_H
+#pragma once
 
 #include <memory>
 
@@ -20,5 +19,3 @@ namespace PGame {
 		};
 	}
 }
-
-#endif

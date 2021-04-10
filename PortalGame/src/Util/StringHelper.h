@@ -1,5 +1,4 @@
-#ifndef PG_UTIL_STRINGHELPER_H
-#define PG_UTIL_STRINGHELPER_H
+#pragma once
 
 #include <string>
 
@@ -8,6 +7,3 @@ namespace PGame {
 		std::string GetBetween(const std::string& input, const std::string& start, const std::string& end);
 	}
 }
-
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef PG_ECS_COMPONENT_ARRAY_H
-#define PG_ECS_COMPONENT_ARRAY_H
+#pragma once
 
 #include <array>
 #include <unordered_map>
@@ -66,5 +65,3 @@ namespace PGame {
 		};
 	}
 }
-
-#endif 

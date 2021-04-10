@@ -1,5 +1,4 @@
-#ifndef PG_CORE_APPLICATION_H
-#define PG_CORE_APPLICATION_H
+#pragma once
 
 #include <string>
 
@@ -8,7 +7,7 @@ typedef struct GLFWwindow GLFWwindow;
 namespace PGame {
 	class Application {
 	public:
-		Application(const std::string& name, size_t width, size_t height);
+		Application(const std::string& name);
 		virtual ~Application();
 
 		virtual bool Init() = 0;
@@ -24,5 +23,3 @@ namespace PGame {
 
 	Application* CreateApplication();
 }
-
-#endif

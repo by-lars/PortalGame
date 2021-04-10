@@ -1,5 +1,4 @@
-#ifndef PG_OPENGL_SIMPLEBUFFER_H
-#define PG_OPENGL_SIMPLEBUFFER_H
+#pragma once
 
 #include "Util/Types.h"
 
@@ -36,5 +35,3 @@ namespace PGame {
 		};
 	}
 }
-
-#endif

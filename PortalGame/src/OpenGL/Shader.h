@@ -1,5 +1,4 @@
-#ifndef PG_OPENGL_SHADER_H
-#define PG_OPENGL_SHADER_H
+#pragma once
 
 #include "Util/Types.h"
 
@@ -24,5 +23,3 @@ namespace PGame {
 		};
 	}
 }
-
-#endif

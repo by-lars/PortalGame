@@ -1,5 +1,4 @@
-#ifndef PG_ECS_ECSDEFS_H
-#define PG_ECS_ECSDEFS_H
+#pragma once
 
 #include <bitset>
 
@@ -20,5 +19,3 @@ namespace PGame {
 		}
 	}
 }
-
-#endif

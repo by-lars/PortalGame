@@ -1,5 +1,4 @@
-#ifndef PG_ECS_COMPONENT_POOL_H
-#define PG_ECS_COMPONENT_POOL_H
+#pragma once
 
 #include <vector>
 #include <memory>
@@ -29,7 +28,7 @@ namespace PGame {
 				int id = GetComponentId<T>();
 
 				if (m_Pool[id] == nullptr) {
-					pgError("Can't add unregistered component#" << id << " - " << typeid(T).name() << " from entity#" << entityID);
+					pgError("Can't add unregistered component#" << id << " - " << typeid(T).name() << " to entity#" << entityID);
 					return;
 				}
 
@@ -73,5 +72,3 @@ namespace PGame {
 		};
 	}
 }
-
-#endif

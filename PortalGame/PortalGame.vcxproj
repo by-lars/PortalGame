@@ -241,6 +241,8 @@
     <ClInclude Include="ext\glfw\src\wgl_context.h" />
     <ClInclude Include="ext\glfw\src\win32_joystick.h" />
     <ClInclude Include="ext\glfw\src\win32_platform.h" />
+    <ClInclude Include="src\Assets\AssetLoader.h" />
+    <ClInclude Include="src\Assets\DirectoryWatcher.h" />
     <ClInclude Include="src\Core\Application.h" />
     <ClInclude Include="src\ECS\ComponentPool.h" />
     <ClInclude Include="src\ECS\Components\Base.h" />

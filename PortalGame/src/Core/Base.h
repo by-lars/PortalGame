@@ -1,5 +1,4 @@
-#ifndef PG_CORE_BASE_H
-#define PG_CORE_BASE_H
+#pragma once
 
 #include <iostream>
 #include <string.h>
@@ -57,5 +56,3 @@ namespace PGame {
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
 }
-
-#endif
