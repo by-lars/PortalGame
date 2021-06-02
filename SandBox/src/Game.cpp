@@ -10,6 +10,8 @@
 
 #include <fstream>
 
+#include <memory>
+
 using namespace PGame;
 
 class Game : public Application {
@@ -21,13 +23,13 @@ public:
 		 0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f
 	};
 
-	Ref<GL::SimpleBuffer> buffer;
-	Ref<GL::Shader> shader;
+	std::shared_ptr<GL::SimpleBuffer> buffer;
+	std::shared_ptr<GL::Shader> shader;
 	ECS::Scene scene;
 
 	Game(const std::string &name) : Application(name) {
-		buffer = CreateRef<GL::SimpleBuffer>(sizeof(vertices));
-		shader = CreateRef<GL::Shader>();
+		buffer = std::make_shared<GL::SimpleBuffer>(sizeof(vertices));
+		shader = std::make_shared<GL::Shader>();
 	}
 
 	virtual bool Init() override {

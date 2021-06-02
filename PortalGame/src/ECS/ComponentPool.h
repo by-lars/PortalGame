@@ -24,7 +24,7 @@ namespace PGame {
 			}
 
 			template<typename T>
-			void Assign(Entity  entityID) {
+			void Assign(Entity entityID) {
 				int id = GetComponentId<T>();
 
 				if (m_Pool[id] == nullptr) {
@@ -64,7 +64,7 @@ namespace PGame {
 		private:
 			template<typename T>
 			std::shared_ptr<ComponentArray<T>> GetComponentArray(int id) {
-				return std::static_pointer_cast<ComponentArray<T>>(m_Pool[id]);
+				return std::static_pointer_cast<ComponentArray<T>>( m_Pool[id] );
 			}
 
 		private:

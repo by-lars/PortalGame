@@ -74,25 +74,25 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\imgui;$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\imgui;$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\imgui;$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\imgui;$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -223,10 +223,20 @@
     <ClCompile Include="ext\glfw\src\win32_time.c" />
     <ClCompile Include="ext\glfw\src\win32_window.c" />
     <ClCompile Include="ext\glfw\src\window.c" />
+    <ClCompile Include="ext\imgui\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="ext\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="ext\imgui\imgui.cpp" />
+    <ClCompile Include="ext\imgui\imgui_demo.cpp" />
+    <ClCompile Include="ext\imgui\imgui_draw.cpp" />
+    <ClCompile Include="ext\imgui\imgui_tables.cpp" />
+    <ClCompile Include="ext\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\Asset\Loader.cpp" />
+    <ClCompile Include="src\Asset\Watcher.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\EntryPoint.h" />
     <ClCompile Include="src\ECS\Scene.cpp" />
     <ClCompile Include="src\ECS\ECSDefs.cpp" />
+    <ClCompile Include="src\ImGui\ImGuiIncl.h" />
     <ClCompile Include="src\OpenGL\Shader.cpp" />
     <ClCompile Include="src\OpenGL\SimpleBuffer.cpp" />
     <ClCompile Include="src\Util\StringHelper.cpp" />
@@ -241,8 +251,17 @@
     <ClInclude Include="ext\glfw\src\wgl_context.h" />
     <ClInclude Include="ext\glfw\src\win32_joystick.h" />
     <ClInclude Include="ext\glfw\src\win32_platform.h" />
-    <ClInclude Include="src\Assets\AssetLoader.h" />
-    <ClInclude Include="src\Assets\DirectoryWatcher.h" />
+    <ClInclude Include="ext\imgui\backends\imgui_impl_glfw.h" />
+    <ClInclude Include="ext\imgui\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="ext\imgui\imconfig.h" />
+    <ClInclude Include="ext\imgui\imgui.h" />
+    <ClInclude Include="ext\imgui\imgui_internal.h" />
+    <ClInclude Include="ext\imgui\imstb_rectpack.h" />
+    <ClInclude Include="ext\imgui\imstb_textedit.h" />
+    <ClInclude Include="ext\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\Asset\Cache.h" />
+    <ClInclude Include="src\Asset\Loader.h" />
+    <ClInclude Include="src\Asset\Watcher.h" />
     <ClInclude Include="src\Core\Application.h" />
     <ClInclude Include="src\ECS\ComponentPool.h" />
     <ClInclude Include="src\ECS\Components\Base.h" />

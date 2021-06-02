@@ -125,22 +125,22 @@ namespace PGame {
 			return PG_SUCCESS;
 		}
 
-		bool Shader::Check(GLuint id, bool isShader, char* infoLog, GLuint logSize) {
+		bool Shader::Check(GLuint sid, bool isShader, char* infoLog, GLuint logSize) {
 			int succ;
 
 			//Check using a different function, if it's not a shader
 			if (isShader) {
-				glGetShaderiv(id, GL_COMPILE_STATUS, &succ);
+				glGetShaderiv(sid, GL_COMPILE_STATUS, &succ);
 				if (!succ) {
-					glGetShaderInfoLog(id, logSize, NULL, infoLog);
+					glGetShaderInfoLog(sid, logSize, NULL, infoLog);
 					return PG_FAILURE;
 				}
 
 			}
 			else {
-				glGetProgramiv(id, GL_LINK_STATUS, &succ);
+				glGetProgramiv(sid, GL_LINK_STATUS, &succ);
 				if (!succ) {
-					glGetProgramInfoLog(id, logSize, NULL, infoLog);
+					glGetProgramInfoLog(sid, logSize, NULL, infoLog);
 					return PG_FAILURE;
 				}
 			}

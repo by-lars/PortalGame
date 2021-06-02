@@ -76,7 +76,7 @@ namespace PGame {
 		void SimpleBuffer::SetFormat(std::initializer_list<BufferElement> format) const {
 			Bind();
 
-			float stride = 0;
+			GLsizei stride = 0;
 
 			//Determine stride for one Vertex
 			for (const auto& element : format) {
@@ -84,16 +84,16 @@ namespace PGame {
 			}
 
 			//Setup attribute pointers
-			int attrId = 0;
-			int offset = 0;
+			GLuint  attrId = 0;
+			size_t offset = 0;
 			for (const auto& element : format) {
 				glEnableVertexAttribArray(attrId);
 
 				if (element.IsDecimalType()) {
-					glVertexAttribPointer(attrId, element.Count, element.Type, GL_FALSE, stride, (void*)offset);
+					glVertexAttribPointer(attrId, element.Count, element.Type, GL_FALSE, stride, (const void*)offset);
 				}
 				else {
-					glVertexAttribIPointer(attrId, element.Count, element.Type, stride, &offset);
+					glVertexAttribIPointer(attrId, element.Count, element.Type, stride, (const void*)offset);
 				}
 
 				offset += element.GetSize();

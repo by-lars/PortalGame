@@ -9,7 +9,7 @@ namespace PGame {
 
 	Application::Application(const std::string& name) {
 		s_Instance = this;
-		IsRunning = true;
+		m_ShouldQuit = false;
 
 		glfwInit();
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -34,8 +34,16 @@ namespace PGame {
 		glViewport(0, 0, 800, 480);
 	}
 
+	GLFWwindow* Application::GetWindow() {
+		return m_Window;
+	}
+
+	bool Application::IsRunning() {
+		return !m_ShouldQuit;
+	}
+
 	void Application::Update() {
-		IsRunning = !glfwWindowShouldClose(m_Window);
+		m_ShouldQuit = glfwWindowShouldClose(m_Window);
 		glfwSwapBuffers(m_Window);
 		glfwPollEvents();
 	}

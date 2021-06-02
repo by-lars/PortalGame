@@ -19,7 +19,7 @@ int main() {
 		return EXIT_FAILURE;
 	}
 
-	while (app->IsRunning) {
+	while (app->IsRunning()) {
 		app->Update();
 	}
 

@@ -4,6 +4,7 @@
 #include <string.h>
 #include <memory>
 #include <cassert>
+#include <thread>
 
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
@@ -24,35 +25,15 @@
 
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 
-#define pgInfo(msg)	  std::cout << PG_FG_BLU << "[INFO] " << msg << PG_CL_RST << std::endl
-#define pgWarn(msg)	  std::cout << PG_FG_YLO << "[WARN] " << msg << PG_CL_RST << std::endl
-#define pgError(msg)  std::cout << PG_FG_RED << "[ERROR] " << __FILENAME__ << "(" << __LINE__ << "): " << msg << PG_CL_RST << std::endl
+#define pgInfo(msg)	  std::cout << PG_FG_BLU << "[INFO ] [" << std::this_thread::get_id() << "] "  << msg << PG_CL_RST << std::endl
+#define pgWarn(msg)	  std::cout << PG_FG_YLO << "[WARN ] [" << std::this_thread::get_id() << "] "  << msg << PG_CL_RST << std::endl
+#define pgError(msg)  std::cout << PG_FG_RED << "[ERROR] [" << std::this_thread::get_id() << "] " << __FILENAME__ << "(" << __LINE__ << "): " << msg << PG_CL_RST << std::endl
 
 #define pgAssert(test, msg) if(!(test)) {pgError(STR_HELPER(test) << " -> " << msg); return PG_FAILURE;}
 #define pgTest(test, msg) if(!(test)) {pgError(STR_HELPER(test) << " -> " << msg); return PG_FAILURE;}
 
 #ifdef _DEBUG 
-#define pgDebug(msg) std::cout << PG_FG_MGT << "[DEBUG] " << __FILENAME__ << "(" << __LINE__ << "): " << msg << PG_CL_RST << std::endl
+#define pgDebug(msg) std::cout << PG_FG_MGT << "[DEBUG] [" << std::this_thread::get_id() << "] " << __FILENAME__ << "(" << __LINE__ << "): " << msg << PG_CL_RST << std::endl
 #else
 #define pgDebug(msg)
 #endif //PG_DEBUG_LOG
-
-namespace PGame {
-	template<typename T>
-	using Scope = std::unique_ptr<T>;
-
-	template<typename T, typename ... Args>
-	constexpr Scope<T> CreateScope(Args&& ... args)
-	{
-		return std::make_unique<T>(std::forward<Args>(args)...);
-	}
-
-	template<typename T>
-	using Ref = std::shared_ptr<T>;
-
-	template<typename T, typename ... Args>
-	constexpr Ref<T> CreateRef(Args&& ... args)
-	{
-		return std::make_shared<T>(std::forward<Args>(args)...);
-	}
-}
