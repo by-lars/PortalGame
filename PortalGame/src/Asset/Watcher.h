@@ -2,22 +2,20 @@
 #include <string>
 #include <thread>
 #include <Windows.h>
-#include <functional>
-#include <queue>
+#include <vector>
+#include <atomic>
+#include <mutex>
 
 namespace PGame {
 	namespace Asset {
-		enum class FileAction {
-			CREATED = FILE_ACTION_ADDED,
-			DELETED = FILE_ACTION_REMOVED,
-			MODIFIED = FILE_ACTION_MODIFIED
-		};
-
 		class Watcher {
 		public:
 			Watcher();
 			Watcher(const std::string& directory);
 			~Watcher();
+
+			bool HasChanges();
+			void GetChanges(std::vector<std::string> &out_changes);
 
 			bool Start();
 			bool Start(const std::string& directory);
@@ -29,8 +27,8 @@ namespace PGame {
 			std::string m_Directory;
 			std::thread m_WatchThread;
 			std::atomic<bool> m_Running;
-
-			std::queue<std::string> m_ChangedFiles;
+			std::mutex m_ChangedFilesMutex;
+			std::vector<std::string> m_ChangedFiles;
 		};
 	}
 }

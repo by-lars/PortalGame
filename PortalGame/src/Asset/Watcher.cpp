@@ -64,6 +64,16 @@ namespace PGame {
 			CloseHandle(m_Handle);
 		}
 
+		bool Watcher::HasChanges() {
+			return m_ChangedFiles.size() > 0;
+		}
+
+		void Watcher::GetChanges(std::vector<std::string> &out_changes) {
+			std::lock_guard<std::mutex> guard(m_ChangedFilesMutex);
+			out_changes = m_ChangedFiles;
+			m_ChangedFiles.clear();
+		}
+
 		void Watcher::Watch() {
 			std::array<BYTE, 4069> buffer = { 0 };
 			DWORD bytesReturned;
@@ -83,7 +93,13 @@ namespace PGame {
 					std::string fileName(tmpString.begin(), tmpString.end());
 					std::replace(fileName.begin(), fileName.end(), '\\', '/');
 
-					pgDebug("File Changed: " << fileName);
+					m_ChangedFilesMutex.lock();
+					if (std::find(m_ChangedFiles.begin(), m_ChangedFiles.end(), fileName) == m_ChangedFiles.end()) {
+						m_ChangedFiles.push_back(fileName);
+						pgDebug("File Changed: " << fileName);
+					}
+					m_ChangedFilesMutex.unlock();
+
 
 					info = (FILE_NOTIFY_INFORMATION*)((BYTE*)info + info->NextEntryOffset);
 				} while (info->NextEntryOffset != 0);

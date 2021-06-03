@@ -20,8 +20,7 @@ namespace PGame {
 		}
 
 		Shader::Shader() {
-			id = glCreateProgram();
-			pgDebug("Created shader id=" << id);
+			id = 0;
 		}
 
 		Shader::~Shader() {
@@ -34,6 +33,13 @@ namespace PGame {
 		}
 
 		bool Shader::Load(const std::string& source) {
+			if (id == 0) {
+				glDeleteProgram(id);
+			}
+
+			id = glCreateProgram();
+			pgDebug("Created shader id=" << id);
+
 			std::string name = SHelper::GetBetween(source, NAME_TOKEN, "\n");
 
 			if (source.empty()) {
@@ -85,7 +91,7 @@ namespace PGame {
 
 			//Step 5: link shaders
 			if (Link() == PG_FAILURE) {
-				pgInfo("Failed to link shader program '" << name << "'");
+				pgError("Failed to link shader program '" << name << "'");
 				//TODO: cleanup shaders like frag and vert
 				return PG_FAILURE;
 			}

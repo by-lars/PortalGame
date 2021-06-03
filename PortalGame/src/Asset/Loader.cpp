@@ -8,17 +8,13 @@
 
 namespace PGame {
 	namespace Asset {
-		Loader::Loader() {
-
-		}
-
-		bool Loader::Load(const std::string& path, std::shared_ptr<GL::Shader> shader) {
+		bool Load(const std::string& path, std::shared_ptr<GL::Shader> shader) {
 			std::string shaderSource;
 			if (LoadText(path, shaderSource) == PG_FAILURE) { return PG_FAILURE; }
 			return shader->Load(shaderSource);
 		}
 
-		bool Loader::LoadText(const std::string& path, std::string& contents) {
+		bool LoadText(const std::string& path, std::string& contents) {
 			std::ifstream file(path);
 
 			if (!file) {
@@ -36,6 +32,5 @@ namespace PGame {
 
 			return PG_SUCCESS;
 		}
-
 	}
 }

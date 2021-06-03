@@ -2,6 +2,9 @@
 #include <fstream>
 #include <filesystem>
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include "Core/EntryPoint.h"
 
 #include "OpenGL/Shader.h"
@@ -10,7 +13,6 @@
 #include "Asset/Watcher.h"
 #include "Asset/Cache.h"
 
-#include <glad/glad.h>
 
 #include "ImGui/ImGuiIncl.h"
 
@@ -19,7 +21,6 @@ namespace fs = std::filesystem;
 
 class Game : public Application {
 public:
-	std::unique_ptr<Asset::Watcher> watcher;
 	Asset::Cache cache;
 
 	Game(const std::string& name) : Application(name) {
@@ -35,9 +36,9 @@ public:
 	virtual bool Init() override {
 		pgInfo("Init");
 
-		std::shared_ptr<GL::Shader> shader = cache.Get<GL::Shader>("assets/shader/testshader.glsl");
-		pgInfo("Cached Shader: " << shader->id);
-		shader->Use();
+		//std::shared_ptr<GL::Shader> shader = cache.Get<GL::Shader>("assets/shader/testshader.glsl");
+		//pgInfo("Cached Shader: " << shader->id);
+		//shader->Use();
 
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -51,7 +52,12 @@ public:
 		return PG_SUCCESS;
 	}
 
+	std::vector<std::shared_ptr<GL::Shader>> shaders;
+
 	virtual void Update() override {
+		cache.HotReloadChangedAssets();
+		cache.CleanupCache();
+
 		glClearColor(0.21f, 0.21f, 0.21f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -60,8 +66,20 @@ public:
 		ImGui::NewFrame();
 
 		ImGui::Begin("Demo window");
-		ImGui::Button("Hello!");
-		ImGui::ShowDemoWindow();
+		if (ImGui::Button("Add Shader!")) {
+			
+			shaders.push_back(cache.Get<GL::Shader>("assets/shader/testshader.glsl"));
+			
+		}
+
+		if (ImGui::Button("Remove Shader!")) {
+			if (shaders.size() > 0) {
+				shaders.pop_back();
+			}
+		}
+
+		ImGui::Text(std::to_string(shaders.size()).c_str());
+
 		ImGui::End();
 
 		ImGui::Render();
