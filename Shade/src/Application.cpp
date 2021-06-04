@@ -23,7 +23,7 @@ class Game : public Application {
 public:
 	Asset::Cache cache;
 
-	Game(const std::string& name) : Application(name) {
+	Game(const std::string& name) : Application(name), cache(true) {
 
 	}
 
@@ -55,8 +55,7 @@ public:
 	std::vector<std::shared_ptr<GL::Shader>> shaders;
 
 	virtual void Update() override {
-		cache.HotReloadChangedAssets();
-		cache.CleanupCache();
+		cache.Update();
 
 		glClearColor(0.21f, 0.21f, 0.21f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);

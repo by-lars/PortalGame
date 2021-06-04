@@ -17,9 +17,18 @@ namespace PGame {
 	namespace Asset {
 		class Cache {
 		public:
-			Cache() {
-				pgDebug("Created asset Cache - Watching for changes!");
-				m_Watcher.Start("assets");
+			Cache(bool watchForChanges) : m_WatchForChanges(watchForChanges) {
+				pgDebug("Created asset Cache");
+
+				if(m_WatchForChanges) {
+					m_Watcher.Start("assets");
+				}
+			}
+
+			~Cache() {
+				if (m_Cache.size() > 0) {
+					pgWarn("Destructor called, but m_Cache.size() > 0");
+				}
 			}
 
 			template<typename T>
@@ -41,27 +50,37 @@ namespace PGame {
 				return Asset::Load(path, std::static_pointer_cast<T>( m_Cache[path] ));
 			}
 
-			void HotReloadChangedAssets() {
+			void Update() {
 				static double lastCallTime;
 				double thisCallTime = glfwGetTime();
-
 				if (thisCallTime - lastCallTime < 2) { return; }
 
+				if (m_WatchForChanges) {
+					HotReloadChangedAssets();
+				}
+
+				CleanupCache();
+
+				lastCallTime = thisCallTime;
+			}
+
+
+		private:
+			void HotReloadChangedAssets() {
 				if (m_Watcher.HasChanges() == false) { return; }
 
 				std::vector<std::string> files;
 				m_Watcher.GetChanges(files);
 
 				for (std::string file : files) {
+					if (m_Cache["assets/" + file] == nullptr) { continue; }
+
 					if (file._Starts_with("shader")) {
 						CacheAsset<GL::Shader>("assets/" + file);
 					} else {
 						pgWarn("Can't reload unknown asset: " << file);
 					}
-
 				}
-
-				lastCallTime = thisCallTime;
 			}
 
 			void CleanupCache() {
@@ -75,8 +94,8 @@ namespace PGame {
 				}
 			}
 
-		private:
 			Asset::Watcher m_Watcher;
+			bool m_WatchForChanges;
 			std::unordered_map<std::string, std::shared_ptr<void>> m_Cache;
 		};
 	}
