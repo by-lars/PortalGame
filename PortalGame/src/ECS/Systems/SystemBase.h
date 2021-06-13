@@ -15,10 +15,7 @@ namespace PGame {
 
 			virtual void Update() = 0;
 
-			inline void AddEntity(Entity entity) { 
-				m_Entities.insert(entity); 
-				pgDebug("Added " << entity << " to system");
-			}
+			inline void AddEntity(Entity entity) { m_Entities.insert(entity); }
 			inline void RemoveEntity(Entity entity) { m_Entities.erase(entity); }
 			inline void RemoveEntities(const std::vector<Entity>& entities) {
 				for (auto& entity : entities) {

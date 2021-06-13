@@ -35,13 +35,11 @@ namespace PGame {
 			pgDebug("Deleted Texture id=" << m_TextureId);
 		}
 
-		GLuint RenderTexture::GetBufferId()
-		{
+		GLuint RenderTexture::GetBufferId() {
 			return m_Id;
 		}
 
-		GLuint RenderTexture::GetTextureId()
-		{
+		GLuint RenderTexture::GetTextureId() {
 			return m_TextureId;
 		}
 
