@@ -236,7 +236,9 @@
     <ClCompile Include="src\Core\EntryPoint.h" />
     <ClCompile Include="src\ECS\Scene.cpp" />
     <ClCompile Include="src\ECS\ECSDefs.cpp" />
+    <ClCompile Include="src\ECS\Systems\DummySystem.cpp" />
     <ClCompile Include="src\ImGui\ImGuiIncl.h" />
+    <ClCompile Include="src\OpenGL\RenderTexture.cpp" />
     <ClCompile Include="src\OpenGL\Shader.cpp" />
     <ClCompile Include="src\OpenGL\SimpleBuffer.cpp" />
     <ClCompile Include="src\Util\StringHelper.cpp" />
@@ -263,11 +265,13 @@
     <ClInclude Include="src\Asset\Loader.h" />
     <ClInclude Include="src\Asset\Watcher.h" />
     <ClInclude Include="src\Core\Application.h" />
-    <ClInclude Include="src\ECS\ComponentPool.h" />
-    <ClInclude Include="src\ECS\Components\Base.h" />
+    <ClInclude Include="src\ECS\Components\Basic.h" />
     <ClInclude Include="src\ECS\Scene.h" />
     <ClInclude Include="src\ECS\ECSDefs.h" />
     <ClInclude Include="src\ECS\ComponentArray.h" />
+    <ClInclude Include="src\ECS\Systems\DummySystem.h" />
+    <ClInclude Include="src\ECS\Systems\SystemBase.h" />
+    <ClInclude Include="src\OpenGL\RenderTexture.h" />
     <ClInclude Include="src\OpenGL\Shader.h" />
     <ClInclude Include="src\OpenGL\SimpleBuffer.h" />
     <ClInclude Include="src\Core\Base.h" />

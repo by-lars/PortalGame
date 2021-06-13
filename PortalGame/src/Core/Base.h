@@ -29,8 +29,7 @@
 #define pgWarn(msg)	  std::cout << PG_FG_YLO << "[ W ] [" << std::this_thread::get_id() << "] "  << msg << PG_CL_RST << std::endl
 #define pgError(msg)  std::cout << PG_FG_RED << "[ E ] [" << std::this_thread::get_id() << "] " << __FILENAME__ << "(" << __LINE__ << "): " << msg << PG_CL_RST << std::endl
 
-#define pgAssert(test, msg) if(!(test)) {pgError(STR_HELPER(test) << " -> " << msg); return PG_FAILURE;}
-#define pgTest(test, msg) if(!(test)) {pgError(STR_HELPER(test) << " -> " << msg); return PG_FAILURE;}
+#define pgAssert(test, msg) if(!(test)) {pgError(STR_HELPER(test) << " -> " << msg ); __debugbreak();}
 
 #ifdef _DEBUG 
 #define pgDebug(msg) std::cout << PG_FG_MGT << "[ D ] [" << std::this_thread::get_id() << "] " << __FILENAME__ << "(" << __LINE__ << "): " << msg << PG_CL_RST << std::endl

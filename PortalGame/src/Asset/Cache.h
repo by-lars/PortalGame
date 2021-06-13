@@ -53,7 +53,7 @@ namespace PGame {
 			void Update() {
 				static double lastCallTime;
 				double thisCallTime = glfwGetTime();
-				if (thisCallTime - lastCallTime < 2) { return; }
+				if (thisCallTime - lastCallTime < 0.1f) { return; }
 
 				if (m_WatchForChanges) {
 					HotReloadChangedAssets();

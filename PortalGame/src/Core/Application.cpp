@@ -17,19 +17,12 @@ namespace PGame {
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 		m_Window = glfwCreateWindow(800, 480, name.c_str(), NULL, NULL);
-		if (m_Window == NULL) {
-			pgError("Could not initialize window");
-			glfwTerminate();
-			return; //TODO ADD ASSERT
-		}
+		pgAssert(m_Window != NULL, "Could not initialize window");
 
 		glfwMakeContextCurrent(m_Window);
 
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-			pgError("Could not load OpenGL extensions");
-			glfwTerminate();
-			return; //ADD ASSERT!
-		}
+		int didGladLoad = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		pgAssert(didGladLoad != 0, "Could not load OpenGL extensions");
 
 		glViewport(0, 0, 800, 480);
 	}

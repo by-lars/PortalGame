@@ -4,12 +4,12 @@
 
 namespace PGame {
 	namespace ECS {
+		const int MAX_ENTITIES = 5000;
+		const int MAX_COMPONENTS = 32;
+
+		using ComponentMask = std::bitset<MAX_COMPONENTS>;	
+
 		using Entity = uint64_t;
-
-		const Entity MAX_ENTITIES = 5000;
-		const Entity MAX_COMPONENTS = 32;
-
-		using ComponentMask = std::bitset<MAX_COMPONENTS>;
 
 		extern int s_ComponentCounter;
 		template <class T>

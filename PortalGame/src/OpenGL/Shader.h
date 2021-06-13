@@ -15,8 +15,10 @@ namespace PGame {
 			bool Load(const std::string& source);
 			void Use();
 
-			GLuint id;
+			GLuint GetId();
+
 		private:
+			GLuint m_Id;
 			int Compile(GLenum shaderType, const char* source);
 			bool Link();
 			bool Check(GLuint id, bool isShader, char* infoLog, GLuint logSize);

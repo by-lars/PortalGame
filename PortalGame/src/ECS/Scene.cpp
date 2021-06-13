@@ -5,7 +5,41 @@
 namespace PGame {
 	namespace ECS {
 		Scene::Scene() {
-			Registry = std::make_unique<ComponentPool>();
+			for (Entity i = 0; i < MAX_ENTITIES; i++) {
+				m_FreeEntityIds.push(i);
+			}
+		}
+
+		void Scene::Update() {
+			if (m_EntitiesToDelete.size() > 0) {
+				for (const Entity& entity : m_EntitiesToDelete) {
+					m_FreeEntityIds.push(entity);
+				}
+
+				for (auto& componentArray : m_ComponentPool) {
+					componentArray.second->OnEntitiesDeleted(m_EntitiesToDelete);
+				}
+
+				for (auto& system : m_Systems) {
+					system->RemoveEntities(m_EntitiesToDelete);
+				}
+
+				m_EntitiesToDelete.clear();
+			}
+
+			for (auto& system : m_Systems) {
+				system->Update();
+			}
+		}
+
+		Entity Scene::CreateEntity() {
+			Entity id = m_FreeEntityIds.front();
+			m_FreeEntityIds.pop();
+			return id;
+		}
+
+		void Scene::DeleteEntity(const Entity& entity) {
+			m_EntitiesToDelete.push_back(entity);
 		}
 	}
 }

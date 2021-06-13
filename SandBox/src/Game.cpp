@@ -1,16 +1,19 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <fstream>
+#include <memory>
+
 
 #include "Core/EntryPoint.h"
 
 #include "OpenGL/Shader.h"
 #include "OpenGL/SimpleBuffer.h"
+#include "Asset/Cache.h"
 
 #include "ECS/Scene.h"
+#include "ECS/Systems/DummySystem.h"
+#include "ECS/Components/Basic.h"
 
-#include <fstream>
-
-#include <memory>
 
 using namespace PGame;
 
@@ -26,45 +29,45 @@ public:
 	std::shared_ptr<GL::SimpleBuffer> buffer;
 	std::shared_ptr<GL::Shader> shader;
 	ECS::Scene scene;
+	Asset::Cache cache;
 
-	Game(const std::string &name) : Application(name) {
+	Game(const std::string &name) : Application(name), cache(true) {
 		buffer = std::make_shared<GL::SimpleBuffer>(sizeof(vertices));
-		shader = std::make_shared<GL::Shader>();
 	}
 
 	virtual bool Init() override {
 		pgInfo("Init");
-		std::ifstream file("assets/shader/testshader.glsl");
 
-		if (!file) {
-			pgError("Coudl not open file :(");
-			return PG_FAILURE;
-		}
-
-		file.seekg(0, std::ios::end);
-		size_t size = file.tellg();
-		std::string source(size, ' ');
-
-		file.seekg(0, std::ios::beg);
-		file.read(&source[0], size);
-
-		shader->Load(source);
+		shader = cache.Get<GL::Shader>("assets/shader/testshader.glsl");
 		shader->Use();
 
 		buffer->Upload(vertices, sizeof(vertices));
 		buffer->SetFormat({ GL::BufferElement(GL_FLOAT, 3), GL::BufferElement(GL_FLOAT, 3) });
 		buffer->Bind();
+			
+		scene.RegisterComponent<ECS::Transform>();
+		scene.RegisterComponent<ECS::Tag>();
+		scene.RegisterSystem<ECS::DummySystem>();
+		
+		ECS::Entity ent1 = scene.CreateEntity();
+		auto& tag = scene.Assign<ECS::Tag>(ent1);
+		tag.Tag = "Hey!";
+
+		ECS::Entity ent2 = scene.CreateEntity();
+		auto& tag2 = scene.Assign<ECS::Tag>(ent2);
+		tag2.Tag = "YOOO!";
 
 		return PG_SUCCESS;
 	}
 
 	virtual void Update() override {
+		cache.Update();
+		scene.Update();
+
 		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//vertices[0] = cos(glfwGetTime());
-		//vertices[4] = tan(glfwGetTime());
-		//vertices[7] = sin(glfwGetTime());
+		shader->Use();
 		buffer->Upload(vertices, sizeof(vertices));
 
 		glDrawArrays(GL_TRIANGLES, 0, 3);

@@ -9,6 +9,7 @@
 
 #include "OpenGL/Shader.h"
 #include "OpenGL/SimpleBuffer.h"
+#include "OpenGL/RenderTexture.h"
 
 #include "Asset/Watcher.h"
 #include "Asset/Cache.h"
@@ -22,6 +23,9 @@ namespace fs = std::filesystem;
 class Game : public Application {
 public:
 	Asset::Cache cache;
+	std::shared_ptr<GL::Shader> shader;
+	std::unique_ptr<GL::SimpleBuffer> rectBuffer;
+	std::unique_ptr<GL::RenderTexture> renderTexture;
 
 	Game(const std::string& name) : Application(name), cache(true) {
 
@@ -36,23 +40,37 @@ public:
 	virtual bool Init() override {
 		pgInfo("Init");
 
-		//std::shared_ptr<GL::Shader> shader = cache.Get<GL::Shader>("assets/shader/testshader.glsl");
-		//pgInfo("Cached Shader: " << shader->id);
-		//shader->Use();
-
+		//Setup IMGUI
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO();
-
 		ImGui_ImplGlfw_InitForOpenGL(Application::GetWindow(), true);
 		ImGui_ImplOpenGL3_Init("#version 330");
-
 		ImGui::StyleColorsDark();
+
+		//Load Shader
+		shader = cache.Get<GL::Shader>("assets/shader/testshader.glsl");
+		
+		//Load rectangle vertecies
+		float vertices[36] = {
+			0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f, // top right
+			0.5f, -0.5f, 0.0f,  1.0f, 1.0f, 0.0f, // bottom right
+		   -0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,  // top left 
+
+			0.5f, -0.5f, 0.0f,  1.0f, 1.0f, 0.0f, // bottom right
+		   -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f, // bottom left
+		   -0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f // top left
+		};
+		
+		rectBuffer = std::make_unique<GL::SimpleBuffer>(sizeof(vertices));
+		rectBuffer->SetFormat({ GL::BufferElement(GL_FLOAT, 3), GL::BufferElement(GL_FLOAT, 3) });
+		rectBuffer->Upload(vertices, sizeof(vertices));
+		rectBuffer->Bind();
+
+		renderTexture = std::make_unique<GL::RenderTexture>(800, 400);
 
 		return PG_SUCCESS;
 	}
-
-	std::vector<std::shared_ptr<GL::Shader>> shaders;
 
 	virtual void Update() override {
 		cache.Update();
@@ -60,25 +78,19 @@ public:
 		glClearColor(0.21f, 0.21f, 0.21f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		renderTexture->Bind();
+			shader->Use();
+			rectBuffer->Bind();
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+		renderTexture->UnBind();
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
 		ImGui::Begin("Demo window");
-		if (ImGui::Button("Add Shader!")) {
-			
-			shaders.push_back(cache.Get<GL::Shader>("assets/shader/testshader.glsl"));
-			
-		}
-
-		if (ImGui::Button("Remove Shader!")) {
-			if (shaders.size() > 0) {
-				shaders.pop_back();
-			}
-		}
-
-		ImGui::Text(std::to_string(shaders.size()).c_str());
-
+		//ImGui::GetWindowDrawList()->AddImage(renderTexture->GetTextureId(), )
+		ImGui::Image((void*)renderTexture->GetTextureId(), ImGui::GetWindowSize(), ImVec2(0,1), ImVec2(1,0));
 		ImGui::End();
 
 		ImGui::Render();

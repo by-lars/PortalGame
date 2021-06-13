@@ -20,25 +20,29 @@ namespace PGame {
 		}
 
 		Shader::Shader() {
-			id = 0;
+			m_Id = 0;
 		}
 
 		Shader::~Shader() {
-			glDeleteProgram(id);
-			pgDebug("Deleted shader id=" << id);
+			glDeleteProgram(m_Id);
+			pgDebug("Deleted shader id=" << m_Id);
 		}
 
 		void Shader::Use() {
-			glUseProgram(id);
+			glUseProgram(m_Id);
+		}
+
+		GLuint Shader::GetId() {
+			return m_Id;
 		}
 
 		bool Shader::Load(const std::string& source) {
-			if (id == 0) {
-				glDeleteProgram(id);
+			if (m_Id == 0) {
+				glDeleteProgram(m_Id);
 			}
 
-			id = glCreateProgram();
-			pgDebug("Created shader id=" << id);
+			m_Id = glCreateProgram();
+			pgDebug("Created shader id=" << m_Id);
 
 			std::string name = SHelper::GetBetween(source, NAME_TOKEN, "\n");
 
@@ -84,7 +88,7 @@ namespace PGame {
 					return PG_FAILURE;
 				}
 
-				glAttachShader(id, subShaderId);
+				glAttachShader(m_Id, subShaderId);
 				pgInfo("Compiled '" << subShaderTypeStr << "' shader of '" << name << "'");
 
 			}
@@ -118,10 +122,10 @@ namespace PGame {
 		}
 
 		bool Shader::Link() {
-			glLinkProgram(id);
+			glLinkProgram(m_Id);
 
 			char infoLog[1024];
-			if (Check(id, false, infoLog, sizeof(infoLog)) == PG_FAILURE) {
+			if (Check(m_Id, false, infoLog, sizeof(infoLog)) == PG_FAILURE) {
 				//Compile failed
 				pgError("Link Log: " << std::endl << infoLog);
 

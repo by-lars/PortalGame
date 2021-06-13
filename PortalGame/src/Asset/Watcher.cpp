@@ -8,7 +8,7 @@
 
 namespace PGame {
 	namespace Asset {
-		Watcher::Watcher() {
+		Watcher::Watcher() : m_Handle(nullptr) {
 			pgDebug("Created Directory Watcher");
 		}
 
