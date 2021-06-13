@@ -5,6 +5,7 @@ namespace PGame {
 	namespace ECS {
 		DummySystem::DummySystem(Scene& scene) : m_Scene(scene) {
 			m_Signature.set(ECS::GetComponentId<ECS::Tag>());
+			m_Signature.set(ECS::GetComponentId<ECS::Transform>());
 		}
 
 		void DummySystem::Update() {

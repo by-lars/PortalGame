@@ -34,8 +34,10 @@ namespace PGame {
 
 			template<typename Component>
 			Component& Assign(const Entity& entity) {
+				m_EntityComponentMasks[entity].set(ECS::GetComponentId<Component>());
+
 				for (auto& system : m_Systems) {
-					if (system->GetSignature().test(ECS::GetComponentId<Component>())) {
+					if ((m_EntityComponentMasks[entity] & system->GetSignature()) == system->GetSignature()) {
 						system->AddEntity(entity);
 					}
 				}
@@ -49,9 +51,7 @@ namespace PGame {
 				GetComponentArray<Component>()->Erase(entity);
 
 				for (auto& system : m_Systems) {
-					if (system->GetSignature().test(ECS::GetComponentId<Component>())) {
-						system->RemoveEntity(entity);
-					}
+					system->RemoveEntity(entity);
 				}
 
 				pgDebug("Removed '" << typeid(Component).name() << "' from entity#" << entity);
@@ -62,12 +62,12 @@ namespace PGame {
 				return GetComponentArray<Component>()->Get(entity);
 			}
 
-			template<typename T>
+			template<typename System>
 			void RegisterSystem() {
-				m_Systems.push_back(std::make_shared<T>(*this));
-				pgDebug("Registered System '" << typeid(T).name() << "'");
+				m_Systems.push_back(std::make_shared<System>(*this));
+				pgDebug("Registered System '" << typeid(System).name() << "'");
 			}
-
+			
 		private:
 			template<typename Component>
 			std::shared_ptr<ComponentArray<Component>> GetComponentArray() {
@@ -83,6 +83,7 @@ namespace PGame {
 			std::vector<Entity> m_EntitiesToDelete;
 			std::vector<std::shared_ptr<ISystem>> m_Systems;
 			std::unordered_map<size_t, std::shared_ptr<IComponentArray>> m_ComponentPool;
+			std::unordered_map<Entity, ComponentMask> m_EntityComponentMasks;
 		};
 	}
 }

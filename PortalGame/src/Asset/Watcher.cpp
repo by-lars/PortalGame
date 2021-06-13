@@ -70,7 +70,7 @@ namespace PGame {
 
 		void Watcher::GetChanges(std::vector<std::string> &out_changes) {
 			std::lock_guard<std::mutex> guard(m_ChangedFilesMutex);
-			out_changes = m_ChangedFiles;
+			out_changes = std::move(m_ChangedFiles);
 			m_ChangedFiles.clear();
 		}
 

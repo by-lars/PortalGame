@@ -12,8 +12,9 @@ namespace PGame {
 
 		void Scene::Update() {
 			if (m_EntitiesToDelete.size() > 0) {
-				for (const Entity& entity : m_EntitiesToDelete) {
+				for (auto& entity : m_EntitiesToDelete) {
 					m_FreeEntityIds.push(entity);
+					m_EntityComponentMasks.erase(entity);
 				}
 
 				for (auto& componentArray : m_ComponentPool) {
@@ -35,6 +36,7 @@ namespace PGame {
 		Entity Scene::CreateEntity() {
 			Entity id = m_FreeEntityIds.front();
 			m_FreeEntityIds.pop();
+			m_EntityComponentMasks[id] = ComponentMask();
 			return id;
 		}
 

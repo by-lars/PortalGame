@@ -5,8 +5,6 @@
 
 namespace PGame {
 	namespace ECS {
-		struct Dummy {};
-
 		struct Transform {
 			Transform() : Translation(0,0,0), Rotation(0,0,0), Scale(1,1,1) {}
 
