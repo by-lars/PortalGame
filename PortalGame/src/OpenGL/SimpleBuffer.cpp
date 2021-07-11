@@ -68,7 +68,7 @@ namespace PGame {
 			glBindVertexArray(0);
 		}
 
-		void SimpleBuffer::Upload(float* verts, uint32_t size) const {
+		void SimpleBuffer::Upload(void* verts, uint32_t size) const {
 			glBindBuffer(GL_ARRAY_BUFFER, m_Buffer);
 			glBufferSubData(GL_ARRAY_BUFFER, 0, size, verts);
 		}

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Util/Types.h"
+#include "OpenGL/Types.h"
 
 #include <stdint.h>
 #include <initializer_list>
@@ -23,7 +23,7 @@ namespace PGame {
 			SimpleBuffer(uint32_t size);
 			~SimpleBuffer();
 
-			void Upload(float* verts, uint32_t size) const;
+			void Upload(void* verts, uint32_t size) const;
 			void SetFormat(std::initializer_list<BufferElement> format) const;
 
 			void Bind() const;

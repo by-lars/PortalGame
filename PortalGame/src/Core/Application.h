@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <GLFW/glfw3.h>
 
 typedef struct GLFWwindow GLFWwindow;
 
@@ -15,8 +16,8 @@ namespace PGame {
 
 		GLFWwindow* GetWindow();
 		bool IsRunning();
-
 		static Application& Get();
+		static void APIENTRY OnDebugMessage(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length, const char* message, const void* userParam);
 	private:
 		bool m_ShouldQuit;
 		GLFWwindow* m_Window;

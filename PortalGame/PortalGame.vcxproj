@@ -276,8 +276,10 @@
     <ClInclude Include="src\OpenGL\Shader.h" />
     <ClInclude Include="src\OpenGL\SimpleBuffer.h" />
     <ClInclude Include="src\Core\Base.h" />
+    <ClInclude Include="src\Renderer\Data.h" />
+    <ClInclude Include="src\Renderer\Renderer3D.h" />
     <ClInclude Include="src\Util\StringHelper.h" />
-    <ClInclude Include="src\Util\Types.h" />
+    <ClInclude Include="src\OpenGL\Types.h" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="assets\shader\testshader.glsl">

@@ -1,9 +1,11 @@
 #pragma once
 
-#include "Util/Types.h"
+#include "OpenGL/Types.h"
 
 #include <string>
 #include <unordered_map>
+
+#include <glm/glm.hpp>
 
 namespace PGame {
 	namespace GL {
@@ -16,6 +18,8 @@ namespace PGame {
 			void Use();
 
 			GLuint GetId();
+
+			void SetMatrix(const char* name, const glm::mat4& matrix);
 
 		private:
 			GLuint m_Id;

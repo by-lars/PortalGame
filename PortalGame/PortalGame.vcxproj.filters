@@ -143,7 +143,7 @@
     <ClInclude Include="src\Core\Base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Util\Types.h">
+    <ClInclude Include="src\OpenGL\Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Core\Application.h">
@@ -222,6 +222,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ECS\Systems\DummySystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\Data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\Renderer3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

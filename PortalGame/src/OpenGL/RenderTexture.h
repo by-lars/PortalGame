@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Util/Types.h"
+#include "OpenGL/Types.h"
 
 namespace PGame {
 	namespace GL {

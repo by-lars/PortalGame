@@ -3,6 +3,7 @@
 #include "Util/StringHelper.h"
 
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace PGame {
 	namespace GL {
@@ -35,6 +36,12 @@ namespace PGame {
 		GLuint Shader::GetId() {
 			return m_Id;
 		}
+
+		void Shader::SetMatrix(const char* name, const glm::mat4& matrix) {
+			Use();
+			glUniformMatrix4fv(glGetUniformLocation(m_Id, name), 1, GL_FALSE, glm::value_ptr(matrix));
+		}
+
 
 		bool Shader::Load(const std::string& source) {
 			if (m_Id == 0) {
