@@ -19,8 +19,8 @@ namespace PGame {
 		static Application& Get();
 		static void APIENTRY OnDebugMessage(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length, const char* message, const void* userParam);
 	private:
-		bool m_ShouldQuit;
 		GLFWwindow* m_Window;
+		bool m_ShouldQuit;
 		static Application* s_Instance;
 	};
 

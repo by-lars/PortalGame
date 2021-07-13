@@ -5,16 +5,23 @@
 namespace PGame {
 	namespace Renderer {
 		struct Vertex {
-			glm::vec3 pos;
-			glm::vec2 uv;
-			glm::vec3 normal;
+			glm::vec3 Pos;
+			glm::vec2 Uv;
+			glm::vec3 Normal;
+		};
+		
+		struct Mesh {
+			std::vector<Vertex> Vertecies;
+			inline uint32_t GetSizeInBytes() const {
+				return sizeof(Vertecies) * Vertecies.size();
+			}
 		};
 
-		typedef  struct {
-			unsigned int  count;
-			unsigned int  instanceCount;
-			unsigned int  firstIndex;
-			unsigned int  baseInstance;
-		} DrawArraysIndirectCommand;
+		struct DrawArraysIndirectCommand {
+			unsigned int VertexCount;
+			unsigned int InstanceCount;
+			unsigned int FirstIndex;
+			unsigned int BaseInstance;
+		};
 	}
 }

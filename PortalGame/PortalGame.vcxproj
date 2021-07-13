@@ -239,9 +239,12 @@
     <ClCompile Include="src\ECS\ECSDefs.cpp" />
     <ClCompile Include="src\ECS\Systems\DummySystem.cpp" />
     <ClCompile Include="src\ImGui\ImGuiIncl.h" />
+    <ClCompile Include="src\OpenGL\Buffer.cpp" />
     <ClCompile Include="src\OpenGL\RenderTexture.cpp" />
     <ClCompile Include="src\OpenGL\Shader.cpp" />
     <ClCompile Include="src\OpenGL\SimpleBuffer.cpp" />
+    <ClCompile Include="src\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Renderer\Renderer3D.cpp" />
     <ClCompile Include="src\Util\StringHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -272,10 +275,12 @@
     <ClInclude Include="src\ECS\ComponentArray.h" />
     <ClInclude Include="src\ECS\Systems\DummySystem.h" />
     <ClInclude Include="src\ECS\Systems\SystemBase.h" />
+    <ClInclude Include="src\OpenGL\Buffer.h" />
     <ClInclude Include="src\OpenGL\RenderTexture.h" />
     <ClInclude Include="src\OpenGL\Shader.h" />
     <ClInclude Include="src\OpenGL\SimpleBuffer.h" />
     <ClInclude Include="src\Core\Base.h" />
+    <ClInclude Include="src\Renderer\Camera.h" />
     <ClInclude Include="src\Renderer\Data.h" />
     <ClInclude Include="src\Renderer\Renderer3D.h" />
     <ClInclude Include="src\Util\StringHelper.h" />

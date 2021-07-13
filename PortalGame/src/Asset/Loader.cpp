@@ -53,11 +53,11 @@ namespace PGame {
 					while (ss >> tempInt) {
 						
 						if (typeCounter == 0) {
-							tempVertex.pos = vertexPositions[tempInt-1];
+							tempVertex.Pos = vertexPositions[tempInt-1];
 						} else if (typeCounter == 1) {
-							tempVertex.uv = uvCoords[tempInt-1];
+							tempVertex.Uv = uvCoords[tempInt-1];
 						} else if (typeCounter == 2) {
-							tempVertex.normal = vertexNormals[tempInt-1];
+							tempVertex.Normal = vertexNormals[tempInt-1];
 						}
 
 						if (ss.peek() == '/') {
