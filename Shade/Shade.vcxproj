@@ -74,25 +74,25 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)PortalGame\ext\glm;$(SolutionDir)PortalGame\ext\glfw\include;$(SolutionDir)PortalGame\ext\glad\include;$(SolutionDir)PortalGame\ext\imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Engine\ext\glm;$(SolutionDir)Engine\ext\glfw\include;$(SolutionDir)Engine\ext\glad\include;$(SolutionDir)Engine\ext\imgui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)PortalGame\ext\glm;$(SolutionDir)PortalGame\ext\glfw\include;$(SolutionDir)PortalGame\ext\glad\include;$(SolutionDir)PortalGame\ext\imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Engine\ext\glm;$(SolutionDir)Engine\ext\glfw\include;$(SolutionDir)Engine\ext\glad\include;$(SolutionDir)Engine\ext\imgui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)PortalGame\ext\glm;$(SolutionDir)PortalGame\ext\glfw\include;$(SolutionDir)PortalGame\ext\glad\include;$(SolutionDir)PortalGame\ext\imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Engine\ext\glm;$(SolutionDir)Engine\ext\glfw\include;$(SolutionDir)Engine\ext\glad\include;$(SolutionDir)Engine\ext\imgui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)PortalGame\ext\glm;$(SolutionDir)PortalGame\ext\glfw\include;$(SolutionDir)PortalGame\ext\glad\include;$(SolutionDir)PortalGame\ext\imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Engine\ext\glm;$(SolutionDir)Engine\ext\glfw\include;$(SolutionDir)Engine\ext\glad\include;$(SolutionDir)Engine\ext\imgui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -100,7 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)PortalGame\src;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine\src;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)PortalGame\src;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine\src;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -132,7 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)PortalGame\src;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine\src;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -148,7 +148,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)PortalGame\src;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine\src;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -159,7 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PortalGame\PortalGame.vcxproj">
+    <ProjectReference Include="..\Engine\Engine.vcxproj">
       <Project>{940e516d-f2bf-4f28-a2dc-2d47bdef418b}</Project>
     </ProjectReference>
   </ItemGroup>

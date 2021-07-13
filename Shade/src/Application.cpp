@@ -17,7 +17,7 @@
 
 #include "ImGui/ImGuiIncl.h"
 
-using namespace PGame;
+using namespace Engine;
 namespace fs = std::filesystem;
 
 class Game : public Application {
@@ -100,6 +100,6 @@ public:
 	}
 };
 
-PGame::Application* PGame::CreateApplication() {
+Engine::Application* Engine::CreateApplication() {
 	return new Game("Shade");
 }

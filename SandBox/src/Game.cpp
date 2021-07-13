@@ -21,7 +21,7 @@
 #include "Renderer/Renderer3D.h"
 #include "Renderer/Camera.h"
 
-using namespace PGame;
+using namespace Engine;
 
 class Game : public Application {
 public:
@@ -57,7 +57,7 @@ public:
 		shader->Use();
 
 		std::vector<Renderer::Vertex> verts;
-		Asset::LoadOBJ("assets/model/monke2.obj", verts);
+		Asset::LoadOBJ("assets/model/monke.obj", verts);
 
 		glm::mat4 proj = glm::perspective(glm::radians(90.0f), 800.0f / 480.0f, 0.1f, 100.0f);
 		glm::mat4 view = glm::mat4(1);
@@ -175,6 +175,6 @@ public:
 	}
 };
 
-PGame::Application* PGame::CreateApplication() {
+Engine::Application* Engine::CreateApplication() {
 	return new Game("SandBox");
 }
