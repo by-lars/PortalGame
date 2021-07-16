@@ -1,9 +1,9 @@
-[submodule "PortalGame/ext/glfw"]
-	path = PortalGame/ext/glfw
-	url = https://github.com/glfw/glfw
-[submodule "PortalGame/ext/glm"]
-	path = PortalGame/ext/glm
+[submodule "Engine/ext/glm"]
+	path = Engine/ext/glm
 	url = https://github.com/g-truc/glm
-[submodule "PortalGame/ext/imgui"]
-	path = PortalGame/ext/imgui
+[submodule "Engine/ext/glfw"]
+	path = Engine/ext/glfw
+	url = https://github.com/glfw/glfw
+[submodule "Engine/ext/imgui"]
+	path = Engine/ext/imgui
 	url = https://github.com/ocornut/imgui
