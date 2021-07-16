@@ -1,10 +1,13 @@
 #include "Renderer3D.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+#include "Asset/Cache.h"
+
 namespace Engine {
 	namespace Renderer {
-		const uint32_t Renderer3D::MAX_BUFFER_SIZE = 512 * 1024 * 1024;
+		const uint32_t Renderer3D::MAX_BUFFER_SIZE = 128 * 1024 * 1024;
 
-		bool Renderer3D::Init() {
+		void Renderer3D::Init(int width, int height, float fov) {
 			glGenVertexArrays(1, &m_RenderVAO);
 
 			m_MeshBuffer.Init(
@@ -20,50 +23,98 @@ namespace Engine {
 			m_CommandBuffer.Init(
 				GL::BufferTypes::DRAW_INDIRECT_BUFFER,
 				GL::BufferUsages::DYNAMIC_DRAW,
-				MAX_BUFFER_SIZE,
+				MAX_BUFFER_SIZE / 4,
 				m_RenderVAO);
 
 			m_InstanceDataBuffer.Init(
 				GL::BufferTypes::ARRAY_BUFFER,
 				GL::BufferUsages::DYNAMIC_DRAW,
-				MAX_BUFFER_SIZE,
+				MAX_BUFFER_SIZE / 4,
 				m_RenderVAO);
 			m_InstanceDataBuffer.SetFormat(
-				3, 
-				{GL::BufferElement(GL::DataTypes::MAT4f, 1, 1)});
+				3, {GL::BufferElement(GL::DataTypes::MAT4f, 1, 1)});
 
+			m_Shader = Asset::Cache::Instance().Get<GL::Shader>("assets/shader/testshader.glsl");
 
-			return true;
+			m_Fov = fov;
+			m_RenderWidth = width;
+			m_RenderHeight = height;
+			m_ClippingZNear = 0.1f;
+			m_ClippingZFar = 100.0f;
+			UpdateProjectionMatrix();
+			SetViewMatrix(glm::mat4(1));
 		}
 
-		void Renderer3D::SubmitMesh(const Mesh& mesh) {
-			m_MeshBuffer.PushBack((void*)mesh.Vertecies.data(), mesh.GetSizeInBytes());
+		Renderer3D::~Renderer3D() {
+			glDeleteVertexArrays(1, &m_RenderVAO);
+		}
+
+		void Renderer3D::SetViewMatrix(const glm::mat4 view) {
+			m_ViewMatrix = view;
+			m_Shader->SetMatrix("uView", m_ViewMatrix);
+		}
+
+		void Renderer3D::UpdateProjectionMatrix() {
+			m_ProjectionMatrix = glm::perspective(m_Fov, (float)m_RenderWidth / (float)m_RenderHeight, m_ClippingZNear, m_ClippingZFar);
+			m_Shader->SetMatrix("uProj", m_ProjectionMatrix);
+		}
+
+		void Renderer3D::SetFov(float fov) {
+			m_Fov = fov;
+			UpdateProjectionMatrix();
+		}
+
+		void Renderer3D::SetResolution(int width, int height) {
+			if (width > 0 && height > 0) {
+				m_RenderWidth = width;
+				m_RenderHeight = height;
+				glViewport(0, 0, m_RenderWidth, m_RenderHeight);
+				UpdateProjectionMatrix();
+			}
+		}
+
+		void Renderer3D::SetClippingDistance(float zNear, float zFar) {
+			m_ClippingZNear = zNear;
+			m_ClippingZFar = zFar;
+			UpdateProjectionMatrix();
+		}
+
+
+		void Renderer3D::SubmitMesh(Mesh* mesh) {
+			MeshInfo info;
+			info.VertexBufferIndex = m_MeshBuffer.GetCurrentOffsetIndex();
+			m_MeshInfo[mesh] = info;
+
+			m_MeshBuffer.PushBack((void*)mesh->Vertecies.data(), mesh->GetSizeInBytes());
 		}
 
 		void Renderer3D::AddInstance(Mesh* mesh, const glm::mat4& transform) {
-			m_InstanceDataBuffer.PushBack((void*)&transform, sizeof(transform));
 			
-			if (m_MeshToCommandIndex.find(mesh) == m_MeshToCommandIndex.end()) {
-				DrawArraysIndirectCommand cmd;
-				cmd.InstanceCount = 1;
-				cmd.VertexCount = mesh->Vertecies.size();
-				cmd.BaseInstance = m_CurrentBaseInstance;
-				cmd.FirstIndex = m_CurrentVertexIndex;
+			MeshInfo& info = m_MeshInfo[mesh];
 
-				m_CurrentBaseInstance += 1;
-				m_CurrentVertexIndex += mesh->Vertecies.size();
-			
-				m_CommandBuffer.PushBack((void*)&cmd, sizeof(cmd));
-				m_RenderCommands.push_back(cmd);
-				m_MeshToCommandIndex[mesh] = m_RenderCommands.size() - 1;
+			if (m_LastMesh == mesh) {	
+				auto& info = m_MeshInfo[mesh];
+				auto& command = m_RenderCommands.back();
+				command.InstanceCount += 1;
+				m_CommandBuffer.Upload((void*)&command, info.CommandBufferOffset, sizeof(command));
 			}
 			else {
-				size_t index = m_MeshToCommandIndex[mesh];
-				auto& cmd = m_RenderCommands[index];
-				cmd.InstanceCount += 1;
-				m_CurrentBaseInstance += 1;
-				m_CommandBuffer.Upload((void*)&m_RenderCommands[index], m_MeshToCommandIndex[mesh] * sizeof(cmd), sizeof(cmd));
+				info.CommandBufferOffset = m_CommandBuffer.GetCurrentOffsetBytes();
+				info.InstanceBufferIndex = m_InstanceDataBuffer.GetCurrentOffsetIndex();
+
+				DrawArraysIndirectCommand command;
+				command.InstanceCount = 1;
+				command.VertexCount = mesh->Vertecies.size();
+				command.BaseInstance = info.InstanceBufferIndex;
+				command.FirstIndex = info.VertexBufferIndex;
+
+				m_CommandBuffer.PushBack((void*)&command, sizeof(command));
+				m_RenderCommands.push_back(command);
 			}
+
+			m_InstanceDataBuffer.PushBack((void*)&transform, sizeof(transform));
+
+			m_LastMesh = mesh;
 		}
 
 		void Renderer3D::Render() {

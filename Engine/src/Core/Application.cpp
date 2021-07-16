@@ -6,10 +6,12 @@
 
 namespace Engine {
 	Application* Application::s_Instance = nullptr;
+	Application* Application::s_DerivedClass = nullptr;
 
-	Application::Application(const std::string& name) {
+	Application::Application(const std::string& name, Application* derived) {
 		s_Instance = this;
 		m_ShouldQuit = false;
+		s_DerivedClass = derived;
 
 		glfwInit();
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -37,6 +39,7 @@ namespace Engine {
 		glEnable(GL_DEBUG_OUTPUT);
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 		glDebugMessageCallback(Application::OnDebugMessage, nullptr);
+		glfwSetFramebufferSizeCallback(m_Window, Application::OnWindowSizeChangedInternal);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
 #endif
 	}
@@ -61,6 +64,10 @@ namespace Engine {
 
 	Application& Application::Get() {
 		return *s_Instance;
+	}
+
+	void Application::OnWindowSizeChangedInternal(GLFWwindow* window, int width, int height) {
+		s_DerivedClass->OnWindowSizeChanged(width, height);
 	}
 
 	void Application::OnDebugMessage(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length, const char* message, const void* userParam) {

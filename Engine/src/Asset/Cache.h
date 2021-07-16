@@ -41,9 +41,11 @@ namespace Engine {
 				return Asset::Load(path, std::static_pointer_cast<T>( m_Cache[path] ));
 			}
 
+			static Cache& Instance();
 		private:
 			void HotReloadChangedAssets();
 			void CleanupCache();
+
 
 			bool m_WatchForChanges;
 			Asset::Watcher m_Watcher;

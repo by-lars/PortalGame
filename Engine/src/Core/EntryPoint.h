@@ -6,7 +6,7 @@
 extern Engine::Application* Engine::CreateApplication();
 
 int main() {
-	pgInfo("Portal Game - Version " << PG_VERSION);
+	pgInfo("Engine - Version " << PG_VERSION);
 	pgDebug("DEBUG BUILD - You might experience performance impacts.");
 
 	Engine::Application* app = Engine::CreateApplication();

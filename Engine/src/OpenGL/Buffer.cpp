@@ -1,5 +1,6 @@
 #include "OpenGL/Buffer.h"
 #include "Core/Base.h"
+#include "OpenGL/Types.h"
 
 #include <glm/glm.hpp>
 
@@ -58,6 +59,7 @@ namespace Engine {
 		void Buffer::Init(BufferTypes type, BufferUsages usage, uint32_t size) {
 			m_Type = type;
 			m_Size = size;
+			m_Stride = 0;
 			
 			//Make a new VAO if there is none
 			glGenVertexArrays(1, &m_VAOid);
@@ -76,6 +78,7 @@ namespace Engine {
 			m_Type = type;
 			m_Size = size;
 			m_VAOid = vaoId;
+			m_Stride = 0;
 
 			//Use the "predefined" vao
 			glBindVertexArray(m_VAOid);
@@ -94,10 +97,6 @@ namespace Engine {
 			glDeleteVertexArrays(1, &m_VAOid);
 		}
 
-		//Probably should not use this functions
-		//as it could corrupt other data used by PushBack
-		//Probably only should be using this to manipulate data
-		//Which has already been uploaded by PushBack
 		void Buffer::Upload(void* data, uint32_t offset, uint32_t size) {
 			Bind();
 			glBufferSubData((GLenum)m_Type, offset, size, data);
@@ -124,11 +123,10 @@ namespace Engine {
 		void Buffer::SetFormat(uint32_t attribOffset, const std::initializer_list<BufferElement>& format) {
 			Bind();
 
-			GLsizei stride = 0;
-
+			m_Stride = 0;
 			//Determine stride for one Vertex
 			for (const auto& element : format) {
-				stride += element.GetSize();
+				m_Stride += element.GetSize();
 			}
 
 			//Setup attribute pointers
@@ -150,10 +148,10 @@ namespace Engine {
 					glEnableVertexAttribArray(attrId);
 
 					if (element.IsDecimalType()) {
-						glVertexAttribPointer(attrId, element.Count, (GLenum)element.Type, GL_FALSE, stride, (const void*)offset);
+						glVertexAttribPointer(attrId, element.Count, (GLenum)element.Type, GL_FALSE, m_Stride, (const void*)offset);
 					}
 					else {
-						glVertexAttribIPointer(attrId, element.Count, (GLenum)element.Type, stride, (const void*)offset);
+						glVertexAttribIPointer(attrId, element.Count, (GLenum)element.Type, m_Stride, (const void*)offset);
 					}
 
 
@@ -181,5 +179,12 @@ namespace Engine {
 			glBindBuffer((GLenum)m_Type, 0);
 		}
 
+		GLuint Buffer::GetCurrentOffsetBytes() {
+			return m_CurrentOffset;
+		}
+
+		GLuint Buffer::GetCurrentOffsetIndex() {
+			return m_CurrentOffset / m_Stride;
+		}
 	}
 }

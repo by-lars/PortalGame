@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include "OpenGL/Types.h"
 
 namespace Engine {
 	namespace Renderer {
@@ -17,11 +18,17 @@ namespace Engine {
 			}
 		};
 
+		struct MeshInfo {
+			GLuint InstanceBufferIndex;
+			GLuint VertexBufferIndex;
+			GLuint CommandBufferOffset;
+		};
+
 		struct DrawArraysIndirectCommand {
-			unsigned int VertexCount;
-			unsigned int InstanceCount;
-			unsigned int FirstIndex;
-			unsigned int BaseInstance;
+			GLuint VertexCount;
+			GLuint InstanceCount;
+			GLuint FirstIndex;
+			GLuint BaseInstance;
 		};
 	}
 }

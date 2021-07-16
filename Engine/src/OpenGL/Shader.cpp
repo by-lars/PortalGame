@@ -44,7 +44,7 @@ namespace Engine {
 
 
 		bool Shader::Load(const std::string& source) {
-			if (m_Id == 0) {
+			if (m_Id != 0) {
 				glDeleteProgram(m_Id);
 			}
 

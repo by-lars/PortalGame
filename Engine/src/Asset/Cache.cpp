@@ -16,6 +16,11 @@ namespace Engine {
 			}
 		}
 
+		Cache& Cache::Instance() {
+			static Cache instance = Cache(true);
+			return instance;
+		}
+
 		void Cache::Update() {
 			static double lastCallTime;
 			double thisCallTime = glfwGetTime();

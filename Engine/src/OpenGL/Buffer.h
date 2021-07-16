@@ -76,12 +76,16 @@ namespace Engine {
 			void SetFormat(uint32_t attribOffset, const std::initializer_list<BufferElement>& format);
 			void SetFormat(const std::initializer_list<BufferElement>& format);
 
+			GLuint GetCurrentOffsetBytes();
+			GLuint GetCurrentOffsetIndex();
+
 			void Bind();
 			void Unbind();
 
 		private:
 			BufferTypes m_Type;
 			uint32_t m_Size;
+			uint32_t m_Stride;
 			uint32_t m_CurrentOffset;
 			GLuint m_BufferId;
 			GLuint m_VAOid;
