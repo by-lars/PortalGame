@@ -10,6 +10,8 @@ namespace Engine {
 		void Renderer3D::Init(int width, int height, float fov) {
 			glGenVertexArrays(1, &m_RenderVAO);
 
+			m_Shader = Asset::Cache::Instance().Get<GL::Shader>("assets/shader/testshader.glsl");
+
 			m_MeshBuffer.Init(
 				GL::BufferTypes::ARRAY_BUFFER,
 				GL::BufferUsages::STATIC_DRAW,
@@ -33,8 +35,6 @@ namespace Engine {
 				m_RenderVAO);
 			m_InstanceDataBuffer.SetFormat(
 				3, {GL::BufferElement(GL::DataTypes::MAT4f, 1, 1)});
-
-			m_Shader = Asset::Cache::Instance().Get<GL::Shader>("assets/shader/testshader.glsl");
 
 			m_Fov = fov;
 			m_RenderWidth = width;
