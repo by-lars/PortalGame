@@ -12,8 +12,12 @@
 
 namespace Engine {
 	namespace Asset {
-		void LoadOBJ(const std::filesystem::path& path, std::vector<Renderer::Vertex>& outVerticies) {
-			std::string data; LoadText(path, data);
+		template<>
+		bool Load(const std::filesystem::path& path, std::shared_ptr<Renderer::Mesh> outMesh) {
+			std::string data; 
+			if (LoadText(path, data) == PG_FAILURE) {
+				return PG_FAILURE;
+			}
 
 			std::vector<glm::vec3> vertexPositions;
 			std::vector<glm::vec3> vertexNormals;
@@ -67,11 +71,11 @@ namespace Engine {
 						else if (ss.peek() == ' ') {
 							ss.ignore(1, ' ');
 							typeCounter = 0;
-							outVerticies.push_back(tempVertex);
+							outMesh->Vertecies.push_back(tempVertex);
 						}
 
 					}
-					outVerticies.push_back(tempVertex);
+					outMesh->Vertecies.push_back(tempVertex);
 				}
 				else if (prefix == "mtllib") {
 
@@ -90,11 +94,14 @@ namespace Engine {
 					pgWarn("Unknown token '" << prefix << "' in OBJ file");
 				}
 			}
-			std::cout << "Vertex Pos: " << vertexPositions.size() << std::endl;
-			std::cout << "Text Pos: " << uvCoords.size() << std::endl;
-			std::cout << "Normal Pos: " << vertexNormals.size() << std::endl;
+			//std::cout << "Vertex Pos: " << vertexPositions.size() << std::endl;
+			//std::cout << "Text Pos: " << uvCoords.size() << std::endl;
+			//std::cout << "Normal Pos: " << vertexNormals.size() << std::endl;
+		
+			return PG_SUCCESS;
 		}
 
+		template<>
 		bool Load(const std::filesystem::path& path, std::shared_ptr<GL::Shader> outShader) {
 			std::string shaderSource;
 			if (LoadText(path, shaderSource) == PG_FAILURE) { return PG_FAILURE; }

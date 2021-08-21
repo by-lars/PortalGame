@@ -2,6 +2,12 @@
 
 namespace Engine {
 	namespace Asset {
+
+		Cache& GetCache() {
+			static Cache instance = Cache(true);
+			return instance;
+		}
+
 		Cache::Cache(bool watchForChanges) : m_WatchForChanges(watchForChanges) {
 			pgDebug("Created asset Cache");
 
@@ -14,11 +20,6 @@ namespace Engine {
 			if (m_Cache.size() > 0) {
 				pgWarn("Destructor called, but m_Cache.size() > 0");
 			}
-		}
-
-		Cache& Cache::Instance() {
-			static Cache instance = Cache(true);
-			return instance;
 		}
 
 		void Cache::Update() {
