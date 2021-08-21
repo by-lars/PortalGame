@@ -5,36 +5,43 @@
 
 namespace Engine {
 	namespace Renderer {
-		const uint32_t Renderer3D::MAX_BUFFER_SIZE = 128 * 1024 * 1024;
+		const uint32_t R3D::MAX_BUFFER_SIZE = 128 * 1024 * 1024;
 
-		void Renderer3D::Init(int width, int height, float fov) {
+		void R3D::Init(int width, int height, float fov) {
 			glGenVertexArrays(1, &m_RenderVAO);
 
-			m_Shader = Asset::Cache::Instance().Get<GL::Shader>("assets/shader/testshader.glsl");
+			glEnable(GL_DEPTH_TEST);
+			glEnable(GL_CULL_FACE);
 
+			m_Shader = Asset::Get<GL::Shader>("assets/shader/testshader.glsl");
+
+			//Buffer to hold the acctual mesh data 
 			m_MeshBuffer.Init(
 				GL::BufferTypes::ARRAY_BUFFER,
 				GL::BufferUsages::STATIC_DRAW,
 				MAX_BUFFER_SIZE, 
 				m_RenderVAO);
 			m_MeshBuffer.SetFormat({
-				GL::BufferElement(GL::DataTypes::FLOAT, 3),
-				GL::BufferElement(GL::DataTypes::FLOAT, 2),
-				GL::BufferElement(GL::DataTypes::FLOAT, 3)});
+				GL::BufferElement(GL::DataTypes::FLOAT, 3),		//Position			X,Y,Z
+				GL::BufferElement(GL::DataTypes::FLOAT, 2),		//Texture Coords	U,V
+				GL::BufferElement(GL::DataTypes::FLOAT, 3)});	//Normals			X,Y,Z
 
-			m_CommandBuffer.Init(
-				GL::BufferTypes::DRAW_INDIRECT_BUFFER,
-				GL::BufferUsages::DYNAMIC_DRAW,
-				MAX_BUFFER_SIZE / 4,
-				m_RenderVAO);
-
+			//Buffer to hold all the transformation mats
+			//for the mesh instances
 			m_InstanceDataBuffer.Init(
 				GL::BufferTypes::ARRAY_BUFFER,
 				GL::BufferUsages::DYNAMIC_DRAW,
 				MAX_BUFFER_SIZE / 4,
 				m_RenderVAO);
 			m_InstanceDataBuffer.SetFormat(
-				3, {GL::BufferElement(GL::DataTypes::MAT4f, 1, 1)});
+				3, { GL::BufferElement(GL::DataTypes::MAT4f, 1, 1) });	//Transform MAT4
+
+			//Buffer to hold the draw call commands
+			m_CommandBuffer.Init(
+				GL::BufferTypes::DRAW_INDIRECT_BUFFER,
+				GL::BufferUsages::DYNAMIC_DRAW,
+				MAX_BUFFER_SIZE / 4,
+				m_RenderVAO);
 
 			m_Fov = fov;
 			m_RenderWidth = width;
@@ -45,26 +52,26 @@ namespace Engine {
 			SetViewMatrix(glm::mat4(1));
 		}
 
-		Renderer3D::~Renderer3D() {
+		R3D::~R3D() {
 			glDeleteVertexArrays(1, &m_RenderVAO);
 		}
 
-		void Renderer3D::SetViewMatrix(const glm::mat4 view) {
+		void R3D::SetViewMatrix(const glm::mat4 view) {
 			m_ViewMatrix = view;
 			m_Shader->SetMatrix("uView", m_ViewMatrix);
 		}
 
-		void Renderer3D::UpdateProjectionMatrix() {
+		void R3D::UpdateProjectionMatrix() {
 			m_ProjectionMatrix = glm::perspective(m_Fov, (float)m_RenderWidth / (float)m_RenderHeight, m_ClippingZNear, m_ClippingZFar);
 			m_Shader->SetMatrix("uProj", m_ProjectionMatrix);
 		}
 
-		void Renderer3D::SetFov(float fov) {
+		void R3D::SetFov(float fov) {
 			m_Fov = fov;
 			UpdateProjectionMatrix();
 		}
 
-		void Renderer3D::SetResolution(int width, int height) {
+		void R3D::SetResolution(int width, int height) {
 			if (width > 0 && height > 0) {
 				m_RenderWidth = width;
 				m_RenderHeight = height;
@@ -73,14 +80,14 @@ namespace Engine {
 			}
 		}
 
-		void Renderer3D::SetClippingDistance(float zNear, float zFar) {
+		void R3D::SetClippingDistance(float zNear, float zFar) {
 			m_ClippingZNear = zNear;
 			m_ClippingZFar = zFar;
 			UpdateProjectionMatrix();
 		}
 
 
-		void Renderer3D::SubmitMesh(Mesh* mesh) {
+		void R3D::SubmitMesh(std::shared_ptr<Mesh> mesh) {
 			MeshInfo info;
 			info.VertexBufferIndex = m_MeshBuffer.GetCurrentOffsetIndex();
 			m_MeshInfo[mesh] = info;
@@ -88,7 +95,7 @@ namespace Engine {
 			m_MeshBuffer.PushBack((void*)mesh->Vertecies.data(), mesh->GetSizeInBytes());
 		}
 
-		void Renderer3D::AddInstance(Mesh* mesh, const glm::mat4& transform) {
+		void R3D::AddInstance(std::shared_ptr<Mesh> mesh, const glm::mat4& transform) {
 			
 			MeshInfo& info = m_MeshInfo[mesh];
 
@@ -117,7 +124,7 @@ namespace Engine {
 			m_LastMesh = mesh;
 		}
 
-		void Renderer3D::Render() {
+		void R3D::Render() {
 			glBindVertexArray(m_RenderVAO);
 			glMultiDrawArraysIndirect(
 				GL_TRIANGLES,

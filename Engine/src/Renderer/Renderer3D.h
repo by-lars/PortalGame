@@ -12,10 +12,10 @@
 
 namespace Engine {
 	namespace Renderer {
-		class Renderer3D {
+		class R3D {
 		public:
-			Renderer3D() = default;
-			~Renderer3D();
+			R3D() = default;
+			~R3D();
 			
 			void Init(int width, int height, float fov);
 
@@ -25,8 +25,8 @@ namespace Engine {
 			void SetResolution(int width, int height);
 			void SetClippingDistance(float zNear, float zFar);
 
-			void SubmitMesh(Mesh* mesh);
-			void AddInstance(Mesh* mesh, const glm::mat4& transform);
+			void SubmitMesh(std::shared_ptr<Mesh> mesh);
+			void AddInstance(std::shared_ptr<Mesh> mesh, const glm::mat4& transform);
 
 			void Render();
 
@@ -45,12 +45,12 @@ namespace Engine {
 			glm::mat4 m_ViewMatrix;
 
 			GLuint m_RenderVAO;
-			Mesh* m_LastMesh;
+			std::shared_ptr<Mesh> m_LastMesh;
 			GL::Buffer m_MeshBuffer;
 			GL::Buffer m_CommandBuffer;
 			GL::Buffer m_InstanceDataBuffer;
 			std::vector<DrawArraysIndirectCommand> m_RenderCommands;
-			std::unordered_map<Mesh*, MeshInfo> m_MeshInfo;
+			std::unordered_map<std::shared_ptr<Mesh>, MeshInfo> m_MeshInfo;
 		};
 	}
 }
