@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <initializer_list>
 
+#include "OpenGL/BufferElement.h"
+
 namespace Engine {
 	namespace GL {
 		enum class BufferTypes {
@@ -22,20 +24,6 @@ namespace Engine {
 			//TRANSFORM_FEEDBACK_BUFFERFFER	= GL_TRANSFORM_FEEDBACK_BUFFERFFER,
 			UNIFORM_BUFFER					= GL_UNIFORM_BUFFER
 		};
-		
-		enum class DataTypes {
-			MAT4f			= 0,
-
-			DOUBLE			= GL_DOUBLE,
-			FLOAT			= GL_FLOAT,
-			HALF_FLOAT		= GL_HALF_FLOAT,
-			INT				= GL_INT,
-			U_INT			= GL_UNSIGNED_INT,
-			BYTE			= GL_BYTE,
-			U_BYTE			= GL_UNSIGNED_BYTE,
-			SHORT			= GL_SHORT,
-			U_SHORT			= GL_UNSIGNED_SHORT,
-		};
 
 		enum class BufferUsages {
 			STATIC_DRAW = GL_STATIC_DRAW,
@@ -49,18 +37,6 @@ namespace Engine {
 			DYNAMIC_DRAW = GL_DYNAMIC_DRAW,
 			DYNAMIC_READ = GL_DYNAMIC_READ,
 			DYNAMIC_COPY = GL_DYNAMIC_COPY
-		};
-
-		struct BufferElement {
-			BufferElement(DataTypes type, uint32_t count);
-			BufferElement(DataTypes type, uint32_t count, uint32_t divisior);
-
-			uint32_t GetSize() const; 
-			bool IsDecimalType() const;
-
-			DataTypes Type;
-			uint32_t Count;
-			uint32_t Divisor;
 		};
 
 		class Buffer {
@@ -78,6 +54,8 @@ namespace Engine {
 
 			GLuint GetCurrentOffsetBytes();
 			GLuint GetCurrentOffsetIndex();
+
+			GLuint GetVAO();
 
 			void Bind();
 			void Unbind();

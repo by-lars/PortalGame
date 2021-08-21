@@ -1,23 +1,13 @@
 #pragma once
 
 #include "OpenGL/Types.h"
+#include "OpenGL/BufferElement.h"
 
 #include <stdint.h>
 #include <initializer_list>
 
 namespace Engine {
 	namespace GL {
-		class BufferElement {
-		public:
-			BufferElement(GLenum type, uint32_t count);
-
-			uint32_t GetSize() const;
-			bool IsDecimalType() const;
-
-			GLenum Type;
-			uint32_t Count;
-		};
-
 		class SimpleBuffer {
 		public:
 			SimpleBuffer(uint32_t size);
