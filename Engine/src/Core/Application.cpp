@@ -6,12 +6,13 @@
 
 namespace Engine {
 	Application* Application::s_Instance = nullptr;
-	Application* Application::s_DerivedClass = nullptr;
 
-	Application::Application(const std::string& name, Application* derived) {
+	Application::Application(const std::string& name) {
 		s_Instance = this;
 		m_ShouldQuit = false;
-		s_DerivedClass = derived;
+
+		m_WindowWidth = 800;
+		m_WindowHeight = 480;
 
 		glfwInit();
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -21,7 +22,7 @@ namespace Engine {
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 #endif 
 
-		m_Window = glfwCreateWindow(800, 480, name.c_str(), NULL, NULL);
+		m_Window = glfwCreateWindow(m_WindowWidth, m_WindowHeight, name.c_str(), NULL, NULL);
 		pgAssert(m_Window != NULL, "Could not initialize window");
 
 		glfwMakeContextCurrent(m_Window);
@@ -32,8 +33,6 @@ namespace Engine {
 		pgInfo("OpenGL Version: " << glGetString(GL_VERSION));
 
 		glViewport(0, 0, 800, 480);
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
 
 #ifdef _DEBUG
 		glEnable(GL_DEBUG_OUTPUT);
@@ -46,6 +45,14 @@ namespace Engine {
 
 	GLFWwindow* Application::GetWindow() {
 		return m_Window;
+	}
+
+	int Application::GetHeight() {
+		return m_WindowHeight;
+	}
+
+	int Application::GetWidth() {
+		return m_WindowWidth;
 	}
 
 	bool Application::IsRunning() {
@@ -67,7 +74,9 @@ namespace Engine {
 	}
 
 	void Application::OnWindowSizeChangedInternal(GLFWwindow* window, int width, int height) {
-		s_DerivedClass->OnWindowSizeChanged(width, height);
+		s_Instance->m_WindowHeight = height;
+		s_Instance->m_WindowWidth = width;
+		s_Instance->OnWindowSizeChanged(width, height);
 	}
 
 	void Application::OnDebugMessage(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length, const char* message, const void* userParam) {

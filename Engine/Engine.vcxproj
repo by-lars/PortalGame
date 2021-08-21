@@ -74,25 +74,25 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\imgui;$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\imgui;$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\imgui;$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\imgui;$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -223,13 +223,6 @@
     <ClCompile Include="ext\glfw\src\win32_time.c" />
     <ClCompile Include="ext\glfw\src\win32_window.c" />
     <ClCompile Include="ext\glfw\src\window.c" />
-    <ClCompile Include="ext\imgui\backends\imgui_impl_glfw.cpp" />
-    <ClCompile Include="ext\imgui\backends\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="ext\imgui\imgui.cpp" />
-    <ClCompile Include="ext\imgui\imgui_demo.cpp" />
-    <ClCompile Include="ext\imgui\imgui_draw.cpp" />
-    <ClCompile Include="ext\imgui\imgui_tables.cpp" />
-    <ClCompile Include="ext\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Asset\Cache.cpp" />
     <ClCompile Include="src\Asset\Loader.cpp" />
     <ClCompile Include="src\Asset\Watcher.cpp" />
@@ -238,12 +231,13 @@
     <ClCompile Include="src\ECS\Scene.cpp" />
     <ClCompile Include="src\ECS\ECSDefs.cpp" />
     <ClCompile Include="src\ECS\Systems\DummySystem.cpp" />
-    <ClCompile Include="src\ImGui\ImGuiIncl.h" />
     <ClCompile Include="src\OpenGL\Buffer.cpp" />
+    <ClCompile Include="src\OpenGL\BufferElement.cpp" />
     <ClCompile Include="src\OpenGL\RenderTexture.cpp" />
     <ClCompile Include="src\OpenGL\Shader.cpp" />
     <ClCompile Include="src\OpenGL\SimpleBuffer.cpp" />
     <ClCompile Include="src\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Renderer\Renderer3D.cpp" />
     <ClCompile Include="src\Util\StringHelper.cpp" />
   </ItemGroup>
@@ -257,14 +251,6 @@
     <ClInclude Include="ext\glfw\src\wgl_context.h" />
     <ClInclude Include="ext\glfw\src\win32_joystick.h" />
     <ClInclude Include="ext\glfw\src\win32_platform.h" />
-    <ClInclude Include="ext\imgui\backends\imgui_impl_glfw.h" />
-    <ClInclude Include="ext\imgui\backends\imgui_impl_opengl3.h" />
-    <ClInclude Include="ext\imgui\imconfig.h" />
-    <ClInclude Include="ext\imgui\imgui.h" />
-    <ClInclude Include="ext\imgui\imgui_internal.h" />
-    <ClInclude Include="ext\imgui\imstb_rectpack.h" />
-    <ClInclude Include="ext\imgui\imstb_textedit.h" />
-    <ClInclude Include="ext\imgui\imstb_truetype.h" />
     <ClInclude Include="src\Asset\Cache.h" />
     <ClInclude Include="src\Asset\Loader.h" />
     <ClInclude Include="src\Asset\Watcher.h" />
@@ -276,12 +262,14 @@
     <ClInclude Include="src\ECS\Systems\DummySystem.h" />
     <ClInclude Include="src\ECS\Systems\SystemBase.h" />
     <ClInclude Include="src\OpenGL\Buffer.h" />
+    <ClInclude Include="src\OpenGL\BufferElement.h" />
     <ClInclude Include="src\OpenGL\RenderTexture.h" />
     <ClInclude Include="src\OpenGL\Shader.h" />
     <ClInclude Include="src\OpenGL\SimpleBuffer.h" />
     <ClInclude Include="src\Core\Base.h" />
     <ClInclude Include="src\Renderer\Camera.h" />
     <ClInclude Include="src\Renderer\Data.h" />
+    <ClInclude Include="src\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Renderer\Renderer3D.h" />
     <ClInclude Include="src\Util\StringHelper.h" />
     <ClInclude Include="src\OpenGL\Types.h" />
@@ -300,6 +288,17 @@
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
+    <CopyFileToFolders Include="assets\shader\shader2d.glsl">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <FileType>Document</FileType>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
+      <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">assets/shader/%(Filename)%(Extension)</DestinationFileName>
+      <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">assets/shader/%(Filename)%(Extension)</DestinationFileName>
+      <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">assets/shader/%(Filename)%(Extension)</DestinationFileName>
+      <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">assets/shader/%(Filename)%(Extension)</DestinationFileName>
+    </CopyFileToFolders>
     <None Include="ext\glfw\src\mappings.h.in" />
   </ItemGroup>
   <ItemGroup>

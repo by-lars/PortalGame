@@ -6,56 +6,6 @@
 
 namespace Engine {
 	namespace GL {
-		/*
-			Buffer Element
-		*/
-
-		BufferElement::BufferElement(DataTypes type, uint32_t count) :
-			Type(type), Count(count), Divisor(0) {}
-
-		BufferElement::BufferElement(DataTypes type, uint32_t count, uint32_t divisor) :
-			Type(type), Count(count), Divisor(divisor) {}
-
-		uint32_t BufferElement::GetSize() const {
-			switch (Type) {
-				case DataTypes::FLOAT:	return Count * sizeof(GLfloat);
-				case DataTypes::INT:	return Count * sizeof(int32_t);
-				case DataTypes::U_INT:	return Count * sizeof(uint32_t);
-				case DataTypes::DOUBLE:	return Count * sizeof(GLdouble);
-				case DataTypes::MAT4f:	return Count * sizeof(glm::mat4);
-			}
-
-			pgAssert(false, "Can't determine size for unknown Buffer Element Type: " << (int)Type)
-			return 0;
-		}
-
-		bool BufferElement::IsDecimalType() const {
-			switch (Type) {
-				case DataTypes::BYTE:
-				case DataTypes::SHORT:
-				case DataTypes::INT:
-				case DataTypes::U_BYTE:
-				case DataTypes::U_SHORT:
-				case DataTypes::U_INT:
-					return false;
-
-				case DataTypes::DOUBLE:
-				case DataTypes::HALF_FLOAT:
-				case DataTypes::FLOAT:
-				case DataTypes::MAT4f:
-					return true;
-			}
-
-			pgAssert(false, "Can't determine category for unknown Buffer Element Type: " << (int)Type);
-			return 0;
-		}
-
-
-
-		/*
-			Buffer
-		*/
-
 		void Buffer::Init(BufferTypes type, BufferUsages usage, uint32_t size) {
 			m_Type = type;
 			m_Size = size;
@@ -101,6 +51,7 @@ namespace Engine {
 			Bind();
 			glBufferSubData((GLenum)m_Type, offset, size, data);
 
+			//This is kinda dangerous
 			if (offset + size > m_CurrentOffset) {
 				m_CurrentOffset += size;
 			}
@@ -185,6 +136,10 @@ namespace Engine {
 
 		GLuint Buffer::GetCurrentOffsetIndex() {
 			return m_CurrentOffset / m_Stride;
+		}
+
+		GLuint Buffer::GetVAO() {
+			return m_VAOid;
 		}
 	}
 }

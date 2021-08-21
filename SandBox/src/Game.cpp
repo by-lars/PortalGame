@@ -36,13 +36,13 @@ public:
 
 	ECS::Scene scene;
 
-	Renderer::Renderer3D renderer;
+	Renderer::R3D renderer;
 	Renderer::Camera camera;
 
 	int m_VertCount;
 
 	Game(const std::string &name) 
-		: Application(name, this), camera(glm::vec3(0, 0, 0), glm::vec3(0, 1, 0), 0, 0, 0.1f) {
+		: Application(name), camera(glm::vec3(0, 0, 0), glm::vec3(0, 1, 0), 0, 0, 0.1f) {
 
 	}
 
@@ -56,80 +56,30 @@ public:
 		glfwSetInputMode(Application::GetWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 		
-		std::vector<Renderer::Vertex> verts;
-		Asset::LoadOBJ("assets/model/monke.obj", verts);
+		std::shared_ptr<Renderer::Mesh> mesh
+		= Asset::Get<Renderer::Mesh>("assets/model/monke.obj");
 
 
-		Renderer::Mesh mesh{
-			verts
-		};
 
-		std::vector<Renderer::Vertex> triangle_verts = {
-			{ {0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}},
-			{ {-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, {0.0f, 1.0f, 0.0f}},
-			{ {0.0f,  0.5f, 0.0f}, {1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}}
-		};
-
-		std::vector<Renderer::Vertex> triangle_verts2 = {
-			{ {0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-			{ {-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-			{ {0.0f,  0.5f, 0.0f}, {1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}}
-		};
-
-		Renderer::Mesh triangle{
-			triangle_verts
-		};
-
-		Renderer::Mesh triangle2{
-			triangle_verts2
-		};
-
-
-		renderer.Init(800, 400, 90.0f);
-		renderer.SubmitMesh(&mesh);
-		renderer.SubmitMesh(&triangle);
+		renderer.Init(Application::GetWidth(), Application::GetHeight(), 90.0f);
+		renderer.SubmitMesh(mesh);
 
 		glm::mat4 transform(1.0f);
 		
-		for (int x = 0; x < 100; x++) {
+		for (int x = 0; x < 40; x++) {
 			for (int y = 0; y < 10; y++) {
-				for (int z = 0; z < 20; z++) {
+				for (int z = 0; z < 40; z++) {
 
 					glm::mat4 trans(1.0f);
-					trans = glm::translate(trans, glm::vec3(x * 5, y * 5, z * 5));
+					trans = glm::translate(trans, glm::vec3(x *4, y *4, z *4));
 
 					trans = glm::rotate(trans, glm::radians(glm::linearRand(0.0f,360.0f)), glm::vec3(1,1,1));
-					renderer.AddInstance(&mesh, trans);
+					renderer.AddInstance(mesh, trans);
 
 				}
 			}
 		}
 		
-
-		for (int x = 0; x < 100; x++) {
-			for (int y = 0; y < 10; y++) {
-				for (int z = 0; z < 100; z++) {
-					glm::mat4 trans(1.0f);
-					trans = glm::translate(trans, glm::vec3(x , y + glm::perlin(glm::vec3(x / 10.0f, y / 10.0f, z / 10.0f)) * 10.0f, z));
-					trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(1, 0, 0));
-					renderer.AddInstance(&triangle, trans);
-				}
-			}
-		}
-
-		//scene.RegisterComponent<ECS::Transform>();
-		//scene.RegisterComponent<ECS::Tag>();
-		//scene.RegisterSystem<ECS::DummySystem>();
-		//
-		//ECS::Entity ent1 = scene.CreateEntity();
-		//auto& tag = scene.Assign<ECS::Tag>(ent1);
-		//tag.Tag = "Hey!";
-
-		//ECS::Entity ent2 = scene.CreateEntity();
-		//auto& tag2 = scene.Assign<ECS::Tag>(ent2);
-		//tag2.Tag = "YOOO!";
-
-		//glDisable(GL_CULL_FACE);
 
 		return PG_SUCCESS;
 	}
@@ -173,12 +123,12 @@ public:
 	}
 
 	virtual void Update() override {
-		Asset::Cache::Instance().Update();
+		Asset::GetCache().Update();
 		scene.Update();
 
 		ProcessInput(Application::GetWindow());
 
-		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
