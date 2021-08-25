@@ -53,12 +53,12 @@ namespace Engine {
 				return PG_FAILURE;
 			}
 			
+			Bind();
+			glBufferSubData((GLenum)m_Type, offset, size, data);
+
 			if (offset + size > m_CurrentOffset) {
 				m_CurrentOffset = offset + size;
 			}
-
-			Bind();
-			glBufferSubData((GLenum)m_Type, offset, size, data);
 
 			return PG_SUCCESS;
 		}
@@ -77,7 +77,7 @@ namespace Engine {
 			return PG_SUCCESS;
 		}
 
-		void Buffer::SetFormat(uint32_t attribOffset, const std::initializer_list<BufferElement>& format) {
+		void Buffer::SetFormat(uint32_t startAttrib, const std::initializer_list<BufferElement>& format) {
 			Bind();
 
 			m_Stride = 0;
@@ -87,7 +87,7 @@ namespace Engine {
 			}
 
 			//Setup attribute pointers
-			GLuint attrId = attribOffset;
+			GLuint attrId = startAttrib;
 			size_t offset = 0;
 			for (const auto& element : format) {
 
@@ -113,8 +113,8 @@ namespace Engine {
 
 
 					glVertexAttribDivisor(attrId, element.Divisor);
-					attrId += 1;
 
+					attrId += 1;
 					offset += element.GetSize();
 				}
 			}

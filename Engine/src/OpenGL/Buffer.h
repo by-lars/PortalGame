@@ -50,7 +50,7 @@ namespace Engine {
 			bool Upload(void* data, uint32_t offset, uint32_t size);
 			bool PushBack(void* data, uint32_t size);
 
-			void SetFormat(uint32_t attribOffset, const std::initializer_list<BufferElement>& format);
+			void SetFormat(uint32_t startAttrib, const std::initializer_list<BufferElement>& format);
 			void SetFormat(const std::initializer_list<BufferElement>& format);
 
 

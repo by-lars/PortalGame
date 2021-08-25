@@ -45,7 +45,7 @@ namespace Engine {
 				m_MeshBuffer.GetVAO() //Use the same VAO as the MeshBuffer 
 			);
 
-			//Set Divisor to 1, update attribute for every instance
+			//Set Divisor to 1, to update attribute for every instance
 			m_TransformBuffer.SetFormat(
 				2, //Start the matrix after pos and tex from the meshbuffer 
 				{GL::BufferElement(GL::DataTypes::FLOAT, 3, 1), // Color Vec3
@@ -80,7 +80,7 @@ namespace Engine {
 
 		void R2D::Finish() {
 			//Draw Rectangles
-			m_TransformBuffer.Upload(m_Rectangles.data(), 0, sizeof(m_Rectangles) * m_Rectangles.size());
+			m_TransformBuffer.Upload(m_Rectangles.data(), 0, sizeof(m_Rectangles[0]) * m_Rectangles.size());
 			glDrawArraysInstanced(GL_TRIANGLES, 0, 6, m_Rectangles.size());
 	
 			//Clean up the old draw jobs
@@ -88,10 +88,10 @@ namespace Engine {
 		}
 
 		void R2D::DrawRect(const glm::vec2& pos, const glm::vec2& size, const glm::vec3& color) {
-			glm::mat4 transform(1.0);
+			glm::mat4 transform = glm::mat4(1.0);
 			//TODO(@Lars): Make sure this is in the right order
 			transform = glm::translate(transform, glm::vec3(pos, 0));
-			transform = glm::scale(transform, glm::vec3(size, 0));
+			transform = glm::scale(transform, glm::vec3(size, 1.0f));
 			
 			m_Rectangles.push_back(RectangleData{ color, transform });
 		}

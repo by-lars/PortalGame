@@ -9,10 +9,12 @@
 
 namespace Engine {
 	namespace Renderer {
+#pragma pack(push)
 		struct RectangleData {
 			glm::vec3 Color;
 			glm::mat4 Transform;
 		};
+#pragma pack(pop)
 
 		class R2D {
 		public:
