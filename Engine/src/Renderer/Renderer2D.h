@@ -10,6 +10,7 @@
 namespace Engine {
 	namespace Renderer {
 		struct RectangleData {
+			glm::vec3 Color;
 			glm::mat4 Transform;
 		};
 
@@ -24,7 +25,7 @@ namespace Engine {
 			void SetClearColor(const glm::vec3& color);
 			void Clear();
 
-			void DrawRect(const glm::vec2& pos, const glm::vec2& size);
+			void DrawRect(const glm::vec2& pos, const glm::vec2& size, const glm::vec3& color);
 		private:
 			void UpdateProjectionMatrix();
 
@@ -33,6 +34,7 @@ namespace Engine {
 
 			std::shared_ptr<GL::Shader> m_Shader;
 			GL::Buffer m_MeshBuffer;
+			GL::Buffer m_TransformBuffer;
 
 			std::vector<RectangleData> m_Rectangles;
 		};

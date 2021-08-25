@@ -263,10 +263,12 @@
     <ClInclude Include="src\ECS\Systems\SystemBase.h" />
     <ClInclude Include="src\OpenGL\Buffer.h" />
     <ClInclude Include="src\OpenGL\BufferElement.h" />
+    <ClInclude Include="src\OpenGL\Texture.h" />
     <ClInclude Include="src\OpenGL\RenderTexture.h" />
     <ClInclude Include="src\OpenGL\Shader.h" />
     <ClInclude Include="src\OpenGL\SimpleBuffer.h" />
     <ClInclude Include="src\Core\Base.h" />
+    <ClInclude Include="src\Renderer\TextureAtlas.h" />
     <ClInclude Include="src\Renderer\Camera.h" />
     <ClInclude Include="src\Renderer\Data.h" />
     <ClInclude Include="src\Renderer\Renderer2D.h" />

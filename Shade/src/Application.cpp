@@ -42,10 +42,10 @@ public:
 
 	virtual void Update() override {
 		r.Clear();
-		r.DrawRect({ 0.0f, 0.0f }, { 64.0f, 64.0f });
-		r.DrawRect({ 64.0f, 0.0f }, { 64.0f, 64.0f });
-		r.DrawRect({ 0.0f, 64.0f }, { 64.0f, 64.0f });
-		r.DrawRect({ 64.0f, 64.0f }, { 64.0f, 64.0f });
+		r.DrawRect({ 0.0f, 0.0f }, { 64.0f, 64.0f }, {1.0f, 1.0f, 1.0f});
+		r.DrawRect({ 64.0f, 0.0f }, { 64.0f, 64.0f }, { 1.0f, 1.0f, 1.0f });
+		r.DrawRect({ 0.0f, 64.0f }, { 64.0f, 64.0f }, { 1.0f, 1.0f, 1.0f });
+		r.DrawRect({ 64.0f, 64.0f }, { 64.0f, 64.0f }, { 1.0f, 1.0f, 1.0f });
 		r.Finish();
 
 		Application::Update();

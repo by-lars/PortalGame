@@ -47,10 +47,12 @@ namespace Engine {
 			void Init(BufferTypes type, BufferUsages usage, uint32_t size);
 			void Init(BufferTypes type, BufferUsages usage, uint32_t size, GLuint vaoId);
 
-			void Upload(void* data, uint32_t offset, uint32_t size);
+			bool Upload(void* data, uint32_t offset, uint32_t size);
 			bool PushBack(void* data, uint32_t size);
+
 			void SetFormat(uint32_t attribOffset, const std::initializer_list<BufferElement>& format);
 			void SetFormat(const std::initializer_list<BufferElement>& format);
+
 
 			GLuint GetCurrentOffsetBytes();
 			GLuint GetCurrentOffsetIndex();

@@ -47,28 +47,34 @@ namespace Engine {
 			glDeleteVertexArrays(1, &m_VAOid);
 		}
 
-		void Buffer::Upload(void* data, uint32_t offset, uint32_t size) {
+		bool Buffer::Upload(void* data, uint32_t offset, uint32_t size) {
+			if (offset + size > m_Size) {
+				pgError("Can't Upload to GPU, buffer too small -> id=" << m_BufferId);
+				return PG_FAILURE;
+			}
+			
+			if (offset + size > m_CurrentOffset) {
+				m_CurrentOffset = offset + size;
+			}
+
 			Bind();
 			glBufferSubData((GLenum)m_Type, offset, size, data);
 
-			//This is kinda dangerous
-			if (offset + size > m_CurrentOffset) {
-				m_CurrentOffset += size;
-			}
+			return PG_SUCCESS;
 		}
 
 		bool Buffer::PushBack(void* data, uint32_t size)
 		{
 			if (size + m_CurrentOffset > m_Size) {
-				pgError("Can't Upload Mesh to GPU, buffer too small");
-				return false;
+				pgError("Can't Upload to GPU, buffer too small -> id=" << m_BufferId);
+				return PG_FAILURE;
 			}
 
 			Bind();
 			glBufferSubData((GLenum)m_Type, m_CurrentOffset, size, data);
 			m_CurrentOffset += size;
 
-			return true;
+			return PG_SUCCESS;
 		}
 
 		void Buffer::SetFormat(uint32_t attribOffset, const std::initializer_list<BufferElement>& format) {
@@ -88,7 +94,7 @@ namespace Engine {
 				if (element.Type == DataTypes::MAT4f) {
 					for (int i = 0; i < 4; i++) {
 						glEnableVertexAttribArray(attrId + i);
-						glVertexAttribPointer(attrId + i, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (const void*)offset);
+						glVertexAttribPointer(attrId + i, 4, GL_FLOAT, GL_FALSE, m_Stride, (const void*)offset);
 						glVertexAttribDivisor(attrId + i, element.Divisor);
 
 						offset += 4 * sizeof(float);
@@ -106,11 +112,11 @@ namespace Engine {
 					}
 
 
-					attrId += 1;
 					glVertexAttribDivisor(attrId, element.Divisor);
-				}
+					attrId += 1;
 
-				offset += element.GetSize();
+					offset += element.GetSize();
+				}
 			}
 		}
 
