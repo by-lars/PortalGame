@@ -74,25 +74,25 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\glm;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\stb;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\glm;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\stb;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\glm;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\stb;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\glm\;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\glm;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\stb;$(ProjectDir)ext\glad\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -225,6 +225,7 @@
     <ClCompile Include="ext\glfw\src\window.c" />
     <ClCompile Include="src\Asset\Cache.cpp" />
     <ClCompile Include="src\Asset\Loader.cpp" />
+    <ClCompile Include="src\Asset\StbImage.cpp" />
     <ClCompile Include="src\Asset\Watcher.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\EntryPoint.h" />
@@ -315,6 +316,18 @@
       <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">assets/model/%(Filename)%(Extension)</DestinationFileName>
       <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">assets/model/%(Filename)%(Extension)</DestinationFileName>
       <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">assets/model/%(Filename)%(Extension)</DestinationFileName>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="assets\texture\albedo.png">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
+      <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">assets/texture/%(Filename)%(Extension)</DestinationFileName>
+      <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">assets/texture/%(Filename)%(Extension)</DestinationFileName>
+      <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">assets/texture/%(Filename)%(Extension)</DestinationFileName>
+      <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">assets/texture/%(Filename)%(Extension)</DestinationFileName>
     </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

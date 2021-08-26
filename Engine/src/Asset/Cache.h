@@ -5,8 +5,6 @@
 #include <unordered_map>
 #include <filesystem>
 
-#include <GLFW/glfw3.h>
-
 #include "OpenGL/Shader.h"
 
 #include "Core/Base.h"
@@ -38,7 +36,13 @@ namespace Engine {
 					m_Cache[path] = std::make_shared<T>();
 				}
 
-				return Asset::Load(path, std::static_pointer_cast<T>( m_Cache[path] ));
+				bool result = Asset::Load(path, std::static_pointer_cast<T>(m_Cache[path]));
+
+				if (result == PG_FAILURE) {
+					pgError("Failed to cache file " << path);
+				}
+
+				return result;
 			}
 		private:
 			void HotReloadChangedAssets();

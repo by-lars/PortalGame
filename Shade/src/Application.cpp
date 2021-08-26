@@ -7,13 +7,10 @@
 
 #include "Core/EntryPoint.h"
 
-#include "OpenGL/Shader.h"
-#include "OpenGL/SimpleBuffer.h"
-#include "OpenGL/RenderTexture.h"
+#include "OpenGL/Texture.h"
 
 #include "Renderer/Renderer2D.h"
 
-#include "Asset/Watcher.h"
 #include "Asset/Cache.h"
 
 using namespace Engine;
@@ -41,12 +38,13 @@ public:
 	}
 
 	virtual void Update() override {
+		Asset::GetCache().Update();
+
 		double time = glfwGetTime();
 
 		r.Clear();
 		for (int i = 0; i < 2000; i++) {
-		r.DrawRect({ cos(time + i*5) * 100.0f + 200.0f, sin(time + i*5) * 100.0f + 200.0f }, { 64.0f, 64.0f }, {cos(time+i*500) * 0.5f + 0.2f, sin(time+i*100) * 0.5f + 0.5f, sin(time+i*100) * 0.5f + 0.5f });
-
+			r.DrawRect({ cos(time + i*5) * 100.0f + 200.0f, sin(time + i*5) * 100.0f + 200.0f }, { 64.0f, 64.0f }, {cos(time+i*500) * 0.5f + 0.2f, sin(time+i*100) * 0.5f + 0.5f, sin(time+i*100) * 0.5f + 0.5f });
 		}
 		r.Finish();
 

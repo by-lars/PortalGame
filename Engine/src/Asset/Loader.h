@@ -6,6 +6,7 @@
 
 #include "OpenGL/Shader.h"
 #include "Renderer/Data.h"
+#include "OpenGL/Texture.h"
 
 namespace fs = std::filesystem;
 
@@ -19,6 +20,9 @@ namespace Engine {
 
 			template<>
 			bool Load<Renderer::Mesh>(const fs::path& file, std::shared_ptr<Renderer::Mesh> outMesh);
+
+			template<>
+			bool Load<GL::Texture>(const fs::path& file, std::shared_ptr<GL::Texture> outTexture);
 
 			bool LoadText(const fs::path& path, std::string& contents);
 	}

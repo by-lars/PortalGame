@@ -6,6 +6,7 @@
 
 #include "OpenGL/Shader.h"
 #include "OpenGL/Buffer.h"
+#include "OpenGL/Texture.h"
 
 namespace Engine {
 	namespace Renderer {
@@ -35,6 +36,8 @@ namespace Engine {
 			int m_RenderHeight;
 
 			std::shared_ptr<GL::Shader> m_Shader;
+			std::shared_ptr<GL::Texture> m_Texture;
+
 			GL::Buffer m_MeshBuffer;
 			GL::Buffer m_TransformBuffer;
 

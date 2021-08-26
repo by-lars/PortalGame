@@ -83,10 +83,10 @@ namespace Engine {
 	}
 
 	void Application::OnDebugMessage(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length, const char* message, const void* userParam) {
-		//if (id == 131169 || id == 131185 || id == 131218 || id == 131204) return;
+		if (id == 131169 || id == 131185 || id == 131218 || id == 131204) return;
 		switch (severity)
 		{
-			case GL_DEBUG_SEVERITY_HIGH:		 pgError("GL (" << id << "): " << message); break;
+			case GL_DEBUG_SEVERITY_HIGH:		 pgError("GL (" << id << "): " << message); __debugbreak(); break;
 			case GL_DEBUG_SEVERITY_MEDIUM:		 pgError("GL (" << id << "): " << message);  break;
 			case GL_DEBUG_SEVERITY_LOW:			 pgWarn("GL (" << id << "): " << message);  break;
 			case GL_DEBUG_SEVERITY_NOTIFICATION: pgInfo("GL (" << id << "): " << message); break;

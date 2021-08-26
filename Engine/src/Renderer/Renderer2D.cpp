@@ -27,6 +27,9 @@ namespace Engine {
 			m_RenderHeight = height;
 
 			m_Shader = Asset::Get<GL::Shader>("assets/shader/shader2d.glsl");
+			m_Shader->SetInt("uTex", 0);
+
+			m_Texture = Asset::Get<GL::Texture>("assets/texture/albedo.png");
 
 			m_MeshBuffer.Init(
 				GL::BufferTypes::ARRAY_BUFFER, 

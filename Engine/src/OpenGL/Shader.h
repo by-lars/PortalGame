@@ -20,6 +20,7 @@ namespace Engine {
 			GLuint GetId();
 
 			void SetMatrix(const char* name, const glm::mat4& matrix);
+			void SetInt(const char* name, int value);
 
 		private:
 			GLuint m_Id;

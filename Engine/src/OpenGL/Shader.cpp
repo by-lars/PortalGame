@@ -42,6 +42,10 @@ namespace Engine {
 			glUniformMatrix4fv(glGetUniformLocation(m_Id, name), 1, GL_FALSE, glm::value_ptr(matrix));
 		}
 
+		void Shader::SetInt(const char* name, int value) {
+			Use();
+			glUniform1i(glGetUniformLocation(m_Id, name), value);
+		}
 
 		bool Shader::Load(const std::string& source) {
 			if (m_Id != 0) {
