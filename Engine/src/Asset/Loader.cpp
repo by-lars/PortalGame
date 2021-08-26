@@ -10,8 +10,32 @@
 #include "Renderer/Data.h"
 #include "OpenGL/Types.h"
 
+#include <stb/stb_image.h>
+
 namespace Engine {
 	namespace Asset {
+		template<>
+		bool Load<GL::Texture>(const fs::path& file, std::shared_ptr<GL::Texture> outTexture) {
+			int width, height, nrChannels;
+			unsigned char* data = stbi_load(file.string().c_str(), &width, &height, &nrChannels, 0);
+
+			if (data == NULL) {
+				pgError(stbi_failure_reason());
+				return PG_FAILURE;
+			}
+
+			outTexture->Init(
+				GL::TexType::TEX_2D,
+				GL::TexUnit::U0,
+				GL::TexWrapping::CLAMP_TO_EDGE,
+				GL::TexFiltering::LINEAR
+			);
+
+			outTexture->Upload(width, height, GL_RGBA, GL_RGBA8, (GLubyte*)data);
+
+			return PG_SUCCESS;
+		}
+
 		template<>
 		bool Load(const std::filesystem::path& path, std::shared_ptr<Renderer::Mesh> outMesh) {
 			std::string data; 
@@ -94,10 +118,6 @@ namespace Engine {
 					pgWarn("Unknown token '" << prefix << "' in OBJ file");
 				}
 			}
-			//std::cout << "Vertex Pos: " << vertexPositions.size() << std::endl;
-			//std::cout << "Text Pos: " << uvCoords.size() << std::endl;
-			//std::cout << "Normal Pos: " << vertexNormals.size() << std::endl;
-		
 			return PG_SUCCESS;
 		}
 

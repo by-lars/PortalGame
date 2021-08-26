@@ -1,4 +1,5 @@
 #include "Asset/Cache.h"
+#include <GLFW/glfw3.h>
 
 namespace Engine {
 	namespace Asset {
@@ -17,9 +18,7 @@ namespace Engine {
 		}
 
 		Cache::~Cache() {
-			if (m_Cache.size() > 0) {
-				pgWarn("Destructor called, but m_Cache.size() > 0");
-			}
+			m_Cache.clear();
 		}
 
 		void Cache::Update() {
