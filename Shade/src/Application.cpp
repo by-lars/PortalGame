@@ -32,7 +32,7 @@ public:
 	virtual bool Init() override {
 		pgInfo("Init");
 
-		r.SetClearColor({ 0.51f, 0.51f, 0.51f });
+		r.SetClearColor({ 0.21f, 0.21f, 0.21f });
 
 		return PG_SUCCESS;
 	}
@@ -43,9 +43,8 @@ public:
 		double time = glfwGetTime();
 
 		r.Clear();
-		for (int i = 0; i < 2000; i++) {
-			r.DrawRect({ cos(time + i*5) * 100.0f + 200.0f, sin(time + i*5) * 100.0f + 200.0f }, { 64.0f, 64.0f }, {cos(time+i*500) * 0.5f + 0.2f, sin(time+i*100) * 0.5f + 0.5f, sin(time+i*100) * 0.5f + 0.5f });
-		}
+		r.DrawRect({ 0.0, 0.0 }, { Application::GetWidth(), Application::GetHeight() }, glm::vec3(1.0f, 1.0f, 1.0f));
+		r.DrawRect({ 500.0, 500.0 }, { Application::GetWidth(), Application::GetHeight() }, glm::vec3(1.0f, 1.0f, 1.0f));
 		r.Finish();
 
 		Application::Update();

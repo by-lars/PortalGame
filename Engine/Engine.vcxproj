@@ -236,7 +236,6 @@
     <ClCompile Include="src\OpenGL\BufferElement.cpp" />
     <ClCompile Include="src\OpenGL\RenderTexture.cpp" />
     <ClCompile Include="src\OpenGL\Shader.cpp" />
-    <ClCompile Include="src\OpenGL\SimpleBuffer.cpp" />
     <ClCompile Include="src\OpenGL\Texture.cpp" />
     <ClCompile Include="src\Renderer\Camera.cpp" />
     <ClCompile Include="src\Renderer\Renderer2D.cpp" />
@@ -268,7 +267,6 @@
     <ClInclude Include="src\OpenGL\Texture.h" />
     <ClInclude Include="src\OpenGL\RenderTexture.h" />
     <ClInclude Include="src\OpenGL\Shader.h" />
-    <ClInclude Include="src\OpenGL\SimpleBuffer.h" />
     <ClInclude Include="src\Core\Base.h" />
     <ClInclude Include="src\Renderer\TextureAtlas.h" />
     <ClInclude Include="src\Renderer\Camera.h" />
@@ -319,11 +317,7 @@
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="assets\texture\albedo.png">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
+    <CopyFileToFolders Include="assets\texture\albedo.jpg">
       <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">assets/texture/%(Filename)%(Extension)</DestinationFileName>
       <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">assets/texture/%(Filename)%(Extension)</DestinationFileName>
       <DestinationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">assets/texture/%(Filename)%(Extension)</DestinationFileName>

@@ -6,16 +6,14 @@
 
 namespace Engine {
 	namespace Renderer {
-		const int MAX_QUADS = 2000;
+		Quad QuadVertecies = {
+			QuadVertex {{0.0f, 1.0f}, {0.0f, 1.0f}},
+			QuadVertex {{1.0f, 0.0f}, {1.0f, 0.0f}},
+			QuadVertex {{0.0f, 0.0f}, {0.0f, 0.0f}},
 
-		float QuadVerticies[] = {
-			0.0f, 1.0f, 0.0f, 1.0f,
-			1.0f, 0.0f, 1.0f, 0.0f,
-			0.0f, 0.0f, 0.0f, 0.0f,
-
-			0.0f, 1.0f, 0.0f, 1.0f,
-			1.0f, 1.0f, 1.0f, 1.0f,
-			1.0f, 0.0f, 1.0f, 0.0f
+			QuadVertex {{0.0f, 1.0f}, {0.0f, 1.0f}},
+			QuadVertex {{1.0f, 1.0f}, {1.0f, 1.0f}},
+			QuadVertex {{1.0f, 0.0f}, {1.0f, 0.0f}}
 		};
 
 		void R2D::Init(int width, int height) {
@@ -29,33 +27,21 @@ namespace Engine {
 			m_Shader = Asset::Get<GL::Shader>("assets/shader/shader2d.glsl");
 			m_Shader->SetInt("uTex", 0);
 
-			m_Texture = Asset::Get<GL::Texture>("assets/texture/albedo.png");
+			m_Texture = Asset::Get<GL::Texture>("assets/texture/albedo.jpg");
 
-			m_MeshBuffer.Init(
+			m_QuadBuffer.Init(
 				GL::BufferTypes::ARRAY_BUFFER, 
 				GL::BufferUsages::DYNAMIC_DRAW, 
-				sizeof(QuadVerticies));
-			m_MeshBuffer.SetFormat({
-				GL::BufferElement(GL::DataTypes::FLOAT, 2), // Position		X,Y
-				GL::BufferElement(GL::DataTypes::FLOAT, 2)  // Texture Pos	U,V
+				MAX_QUADS * sizeof(Quad));
+
+			//Set Divisor to 1 so everything updates for each instance
+			m_QuadBuffer.SetFormat({
+				GL::BufferElement(GL::DataTypes::FLOAT, 2, 1), // Position		X,Y
+				GL::BufferElement(GL::DataTypes::FLOAT, 2, 1)  // Texture Pos	U,V
 			});
-			m_MeshBuffer.PushBack(QuadVerticies, sizeof(QuadVerticies));
 
-			m_TransformBuffer.Init(
-				GL::BufferTypes::ARRAY_BUFFER, 
-				GL::BufferUsages::DYNAMIC_DRAW, 
-				sizeof(RectangleData) * MAX_QUADS, 
-				m_MeshBuffer.GetVAO() //Use the same VAO as the MeshBuffer 
-			);
-
-			//Set Divisor to 1, to update attribute for every instance
-			m_TransformBuffer.SetFormat(
-				2, //Start the matrix after pos and tex from the meshbuffer 
-				{GL::BufferElement(GL::DataTypes::FLOAT, 3, 1), // Color Vec3
-				GL::BufferElement(GL::DataTypes::MAT4f, 1, 1)} //Transformm mat4 
-			);
-
-
+			m_RectanglesToDraw = 0;
+					
 			UpdateProjectionMatrix();
 		}
 
@@ -83,20 +69,29 @@ namespace Engine {
 
 		void R2D::Finish() {
 			//Draw Rectangles
-			m_TransformBuffer.Upload(m_Rectangles.data(), 0, sizeof(m_Rectangles[0]) * m_Rectangles.size());
-			glDrawArraysInstanced(GL_TRIANGLES, 0, 6, m_Rectangles.size());
-	
-			//Clean up the old draw jobs
-			m_Rectangles.clear();
+			m_QuadBuffer.Upload(m_Quads.data(), 0, sizeof(Quad) * m_RectanglesToDraw);
+			glDrawArraysInstanced(GL_TRIANGLES, 0, 6, m_RectanglesToDraw);
+			glDrawArrays(GL_TRIANGLES, 0, 6 * m_RectanglesToDraw);
+			m_RectanglesToDraw = 0;
 		}
 
 		void R2D::DrawRect(const glm::vec2& pos, const glm::vec2& size, const glm::vec3& color) {
 			glm::mat4 transform = glm::mat4(1.0);
-			//TODO(@Lars): Make sure this is in the right order
+
 			transform = glm::translate(transform, glm::vec3(pos, 0));
 			transform = glm::scale(transform, glm::vec3(size, 1.0f));
-			
-			m_Rectangles.push_back(RectangleData{ color, transform });
+
+			Quad quad = QuadVertecies;
+
+			for (int i = 0; i < 6; i++) {
+				glm::vec4 pos(quad.Vertecies[i].Pos, 0.0, 0.0);
+				pos = transform * pos;
+				quad.Vertecies[i].Pos = pos;
+			}
+
+			m_Quads[m_RectanglesToDraw] = quad;
+
+			m_RectanglesToDraw++;
 		}
 	}
 }

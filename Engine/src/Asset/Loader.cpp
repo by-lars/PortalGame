@@ -24,6 +24,8 @@ namespace Engine {
 				return PG_FAILURE;
 			}
 
+			pgDebug("Loaded Image with " << nrChannels << " channels.");
+
 			outTexture->Init(
 				GL::TexType::TEX_2D,
 				GL::TexUnit::U0,
@@ -31,7 +33,17 @@ namespace Engine {
 				GL::TexFiltering::LINEAR
 			);
 
-			outTexture->Upload(width, height, GL_RGBA, GL_RGBA8, (GLubyte*)data);
+			if (nrChannels == 4) {
+				outTexture->Upload(width, height, GL_RGBA, GL_RGBA8, (GLubyte*)data);
+			}
+			else if (nrChannels == 3) {
+				outTexture->Upload(width, height, GL_RGB, GL_RGB8, (GLubyte*)data);
+			}
+			else {
+				pgError("Unknown Image Format with less than 3 color channels.");
+				return PG_FAILURE;
+			}
+
 
 			return PG_SUCCESS;
 		}
