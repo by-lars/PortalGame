@@ -9,12 +9,12 @@
 namespace Engine {
 	namespace Asset {
 		Watcher::Watcher() : m_Handle(nullptr) {
-			pgDebug("Created Directory Watcher");
+			ENGINE_DEBUG("Created Directory Watcher");
 		}
 
 		Watcher::Watcher(const std::string& directory)
 			: m_Handle(nullptr) {
-			pgDebug("Created Directory Watcher - Dir=" << directory);
+			ENGINE_DEBUG("Created Directory Watcher - Dir=" << directory);
 			m_Directory = std::filesystem::absolute(directory).string();
 		}
 
@@ -31,8 +31,8 @@ namespace Engine {
 
 		bool Watcher::Start() {
 			if (m_Directory.empty()) {
-				pgError("Can't watch empty path!");
-				return PG_FAILURE;
+				ENGINE_ERROR("Can't watch empty path!");
+				return ENGINE_FAILURE;
 			}
 
 			m_Handle = CreateFile(
@@ -45,14 +45,14 @@ namespace Engine {
 				NULL);
 
 			if (m_Handle == INVALID_HANDLE_VALUE) {
-				pgError("Couldn't open handle to watch directory -> " << m_Directory);
+				ENGINE_ERROR("Couldn't open handle to watch directory -> " << m_Directory);
 				return false;
 			}
 
 			m_Running = true;
 			m_WatchThread = std::thread(&Watcher::Watch, this);
 
-			pgDebug("Starting to watch " << m_Directory);
+			ENGINE_DEBUG("Starting to watch " << m_Directory);
 
 			return true;
 		}
@@ -83,7 +83,7 @@ namespace Engine {
 					FILE_NOTIFY_CHANGE_LAST_WRITE, &bytesReturned, NULL, NULL);
 
 				if (succ == false) { 
-					if (m_Running) { pgError("IO Error while trying to watch directory" << m_Directory); } 
+					if (m_Running) { ENGINE_ERROR("IO Error while trying to watch directory" << m_Directory); } 
 					continue; 
 				}
 
@@ -96,7 +96,7 @@ namespace Engine {
 					m_ChangedFilesMutex.lock();
 					if (std::find(m_ChangedFiles.begin(), m_ChangedFiles.end(), fileName) == m_ChangedFiles.end()) {
 						m_ChangedFiles.push_back(fileName);
-						pgDebug("File Changed: " << fileName);
+						ENGINE_DEBUG("File Changed: " << fileName);
 					}
 					m_ChangedFilesMutex.unlock();
 
@@ -105,7 +105,7 @@ namespace Engine {
 				} while (info->NextEntryOffset != 0);
 			}
 
-			pgDebug("Stopped watching " << m_Directory);
+			ENGINE_DEBUG("Stopped watching " << m_Directory);
 		}
 	}
 }

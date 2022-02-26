@@ -1,0 +1,174 @@
+#include <string>
+#include <fstream>
+#include <memory>
+#include <vector>
+#include <sstream>
+#include <filesystem>
+
+#include "Asset/Loader.h"
+#include "Core/Base.h"
+#include "Renderer/Data.h"
+#include "OpenGL/Types.h"
+#include <tinyobjloader/tiny_obj_loader.h>
+
+#include <stb/stb_image.h>
+
+namespace Engine {
+	namespace Asset {
+		template<>
+		bool Load<GL::Texture>(const fs::path& file, GL::Texture& outTexture) {
+			stbi_set_flip_vertically_on_load(true);
+			int width, height, nrChannels;
+			unsigned char* data = stbi_load(file.string().c_str(), &width, &height, &nrChannels, 0);
+
+			if (data == NULL) {
+				ENGINE_ERROR(stbi_failure_reason());
+				return PG_FAILURE;
+			}
+
+			ENGINE_DEBUG("Loaded Image with " << nrChannels << " channels.");
+
+			if (nrChannels == 4) {
+
+				outTexture.Init(
+					width, height,
+					GL_RGBA8,
+					GL::TexUnit::U0,
+					GL::TexWrapping::CLAMP_TO_EDGE,
+					GL::TexFiltering::LINEAR
+				);
+
+
+				outTexture.Upload(0, 0, width, height, GL_RGBA, (GLubyte*)data);
+			}
+			else if (nrChannels == 3) {
+
+				outTexture.Init(
+					width, height,
+					GL_RGB8,
+					GL::TexUnit::U0,
+					GL::TexWrapping::CLAMP_TO_EDGE,
+					GL::TexFiltering::LINEAR
+				);
+
+
+				outTexture.Upload(0, 0, width, height, GL_RGB, (GLubyte*)data);
+			}
+			else {
+				ENGINE_ERROR("Unknown Image Format with less than 3 color channels.");
+				return PG_FAILURE;
+			}
+
+
+			return PG_SUCCESS;
+		}
+
+		template<>
+		bool Load<Renderer::Image>(const fs::path& file, Renderer::Image& outImage) {
+			int nrChannels;
+			stbi_set_flip_vertically_on_load(true);
+			outImage.ImageData = stbi_load(file.string().c_str(), &outImage.Width, &outImage.Height, &nrChannels, 0);
+
+			if (outImage.ImageData == NULL) {
+				ENGINE_ERROR(stbi_failure_reason());
+				return PG_FAILURE;
+			}
+
+			if (nrChannels == 4) {
+				outImage.Format = GL_RGBA;
+			}
+			else if (nrChannels == 3) {
+				outImage.Format = GL_RGB;
+			}
+			else {
+				ENGINE_ERROR("Unknown Image Format with less than 3 color channels.");
+				return PG_FAILURE;
+			}
+
+			ENGINE_DEBUG("Loaded Image with " << nrChannels << " channels.");
+			return PG_SUCCESS;
+		}
+
+		template<>
+		bool Load(const std::filesystem::path& path, Renderer::Mesh& outMesh) {
+			tinyobj::ObjReaderConfig reader_config;
+			//reader_config.mtl_search_path = path.string();
+			tinyobj::ObjReader reader;
+
+			bool success = reader.ParseFromFile(path.string(), reader_config);
+			if (!success) {
+				if (!reader.Error().empty()) {
+					ENGINE_ERROR("OBJ LOADER: " << reader.Error());
+				}
+				return PG_FAILURE;
+			}
+
+			if (!reader.Warning().empty()) {
+				pgWarn("OBJ LOADER: " << reader.Warning());
+			}
+
+			auto& objAttribs = reader.GetAttrib();
+			auto& objShapes = reader.GetShapes();
+			auto& objMaterials = reader.GetMaterials();
+
+			Renderer::Vertex tmpVertex;
+
+			for (auto& shape : objShapes) {
+				size_t indexOffset = 0;
+
+				for (size_t f = 0; f < shape.mesh.num_face_vertices.size(); f++) {
+					size_t nVertecies = size_t(shape.mesh.num_face_vertices[f]);
+				
+					for (size_t v = 0; v < nVertecies; v++) {
+						tinyobj::index_t index = shape.mesh.indices[indexOffset + v];
+						tmpVertex.Pos.x = objAttribs.vertices[3 * size_t(index.vertex_index) + 0];
+						tmpVertex.Pos.y = objAttribs.vertices[3 * size_t(index.vertex_index) + 1];
+						tmpVertex.Pos.z = objAttribs.vertices[3 * size_t(index.vertex_index) + 2];
+
+						if (index.normal_index >= 0) {
+							tmpVertex.Normal.x = objAttribs.normals[3 * size_t(index.normal_index) + 0];
+							tmpVertex.Normal.y = objAttribs.normals[3 * size_t(index.normal_index) + 1];
+							tmpVertex.Normal.z = objAttribs.normals[3 * size_t(index.normal_index) + 2];
+						}
+						if (index.texcoord_index >= 0) {
+							tmpVertex.Uv.x = objAttribs.texcoords[2 * size_t(index.texcoord_index) + 0];
+							tmpVertex.Uv.y = objAttribs.texcoords[2 * size_t(index.texcoord_index) + 1];
+						}
+						outMesh.Vertecies.push_back(tmpVertex);
+					}
+
+					indexOffset += nVertecies;
+				}
+			}
+
+
+			return PG_SUCCESS;
+		}
+
+		template<>
+		bool Load(const std::filesystem::path& path, GL::Shader& outShader) {
+			std::string shaderSource;
+			if (LoadText(path, shaderSource) == PG_FAILURE) { return PG_FAILURE; }
+			return outShader.Load(shaderSource);
+		}
+
+		bool LoadText(const std::filesystem::path& path, std::string& contents) {
+			std::ifstream file(path);
+
+			if (!file) {
+				ENGINE_ERROR("Could not open file -> " << path);
+				return PG_FAILURE;
+			}
+
+			file.seekg(0, std::ios::end);
+			size_t size = file.tellg();
+
+			contents = std::string(size, ' ');
+
+			file.seekg(0, std::ios::beg);
+			file.read(&contents[0], size);
+
+			return PG_SUCCESS;
+		}
+	}
+}

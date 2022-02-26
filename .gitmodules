@@ -7,3 +7,9 @@
 [submodule "Engine/ext/stb/stb"]
 	path = Engine/ext/stb/stb
 	url = https://github.com/nothings/stb
+[submodule "Engine/ext/tinyobjloader/tinyobjloader"]
+	path = Engine/ext/tinyobjloader/tinyobjloader
+	url = https://github.com/tinyobjloader/tinyobjloader
+[submodule "Engine/ext/vk-bootstrap"]
+	path = Engine/ext/vk-bootstrap
+	url = https://github.com/charles-lunarg/vk-bootstrap

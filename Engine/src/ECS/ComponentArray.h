@@ -25,14 +25,14 @@ namespace Engine {
 			void OnEntitiesDeleted(const std::vector<Entity>& entities) override {
 				for (const Entity& entity : entities) {
 					if (m_EntityToDense.find(entity) != m_EntityToDense.end()) {
-						pgDebug("Deleting Entity " << entity << " from component array " << typeid(T).name());
+						ENGINE_DEBUG("Deleting Entity " << entity << " from component array " << typeid(T).name());
 						Erase(entity);
 					}
 				}
 			}
 
 			T& Insert(Entity entity, const T& data) {
-				pgAssert(m_EntityToDense.find(entity) == m_EntityToDense.end(), "Component '" << typeid(T).name() << "' is already on Entity#" << entity);
+				ENGINE_ASSERT(m_EntityToDense.find(entity) == m_EntityToDense.end(), "Component '" << typeid(T).name() << "' is already on Entity#" << entity);
 				m_Dense[m_Size] = data;
 				m_EntityToDense[entity] = m_Size;
 				m_DenseToEntity[m_Size] = entity;
@@ -41,7 +41,7 @@ namespace Engine {
 			}
 
 			void Erase(Entity entityToErase) {
-				pgAssert(m_EntityToDense.find(entityToErase) != m_EntityToDense.end(), "Can't access non existing Entity#" << entityToErase);
+				ENGINE_ASSERT(m_EntityToDense.find(entityToErase) != m_EntityToDense.end(), "Can't access non existing Entity#" << entityToErase);
 
 				size_t lastIndex = m_Size - 1;
 				size_t removedIndex = m_EntityToDense[entityToErase];
@@ -62,12 +62,12 @@ namespace Engine {
 			}
 
 			T& Get(Entity entity) {
-				pgAssert(m_EntityToDense.find(entity) != m_EntityToDense.end(), "Can't access non existing Entity#" << entity);
+				ENGINE_ASSERT(m_EntityToDense.find(entity) != m_EntityToDense.end(), "Can't access non existing Entity#" << entity);
 				return m_Dense[m_EntityToDense[entity]];
 			}
 
 			void Set(Entity entity, const T& data) {
-				pgAssert(m_EntityToDense.find(entity) != m_EntityToDense.end(), "Can't access non existing Entity#" << entity);
+				ENGINE_ASSERT(m_EntityToDense.find(entity) != m_EntityToDense.end(), "Can't access non existing Entity#" << entity);
 				m_Dense[m_EntityToDense[entity]] = data;
 			}
 

@@ -11,7 +11,7 @@ namespace Engine {
 		void DummySystem::Update() {
 			for (auto& entity : m_Entities) {
 				auto& tag = m_Scene.GetComponent<ECS::Tag>(entity);
-				pgInfo(tag.Tag);
+				ENGINE_INFO(tag.Tag);
 			}
 		}
 	}

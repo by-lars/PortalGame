@@ -29,7 +29,7 @@ namespace Engine {
 				pgAssert(m_ComponentPool[id] == nullptr, "Component '" << typeid(Component).name() << "' is already registed.");
 
 				m_ComponentPool[id] = std::make_shared<ComponentArray<Component>>();
-				pgDebug("Registered '" << typeid(Component).name() << "' as component#" << id);
+				ENGINE_DEBUG("Registered '" << typeid(Component).name() << "' as component#" << id);
 			}
 
 			template<typename Component>
@@ -42,7 +42,7 @@ namespace Engine {
 					}
 				}
 
-				pgDebug("Added '" << typeid(Component).name() << "' to entity#" << entity);
+				ENGINE_DEBUG("Added '" << typeid(Component).name() << "' to entity#" << entity);
 				return GetComponentArray<Component>()->Insert(entity, Component());
 			}
 
@@ -54,7 +54,7 @@ namespace Engine {
 					system->RemoveEntity(entity);
 				}
 
-				pgDebug("Removed '" << typeid(Component).name() << "' from entity#" << entity);
+				ENGINE_DEBUG("Removed '" << typeid(Component).name() << "' from entity#" << entity);
 			}
 
 			template<typename Component>
@@ -65,7 +65,7 @@ namespace Engine {
 			template<typename System>
 			void RegisterSystem() {
 				m_Systems.push_back(std::make_shared<System>(*this));
-				pgDebug("Registered System '" << typeid(System).name() << "'");
+				ENGINE_DEBUG("Registered System '" << typeid(System).name() << "'");
 			}
 			
 		private:
@@ -73,7 +73,7 @@ namespace Engine {
 			std::shared_ptr<ComponentArray<Component>> GetComponentArray() {
 				int id = ECS::GetComponentId<Component>();
 
-				pgAssert(m_ComponentPool[id] != nullptr,
+				ENGINE_ASSERT(m_ComponentPool[id] != nullptr,
 					"Can't get Component Array for unregistered component '" << typeid(Component).name());
 
 				return std::static_pointer_cast<ComponentArray<Component>>(m_ComponentPool[id]);

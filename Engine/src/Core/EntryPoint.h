@@ -1,26 +1,24 @@
 #pragma once
 
-#include "Core/Application.h"
+#include "Core/Core.h"
 #include "Core/Base.h"
 
-extern Engine::Application* Engine::CreateApplication();
+extern Engine::Core* Engine::CreateApplication();
 
 int main() {
-	pgInfo("Engine - Version " << PG_VERSION);
-	pgDebug("DEBUG BUILD - You might experience performance impacts.");
+	ENGINE_INFO("Engine - Version " << ENGINE_VERSION);
+	ENGINE_DEBUG("DEBUG BUILD - You might experience performance impacts.");
 
-	Engine::Application* app = Engine::CreateApplication();
+	Engine::Core* app = Engine::CreateApplication();
 	
-	bool didInit = app->Init();
+	ENGINE_INFO("Initializing Application...");
 
-	if (didInit == PG_FAILURE) {
-		pgError("Failed to initialize Application!");
+	if (app->Init() == ENGINE_FAILURE) {
+		ENGINE_ERROR("Failed to initialize Application!");
 		return EXIT_FAILURE;
 	}
 
-	while (app->IsRunning()) {
-		app->Update();
-	}
+	app->MainLoop();
 
 	delete app;
 
