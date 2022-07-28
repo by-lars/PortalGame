@@ -1,7 +1,6 @@
 #pragma once
 #include "Graphics/VulkanContext.h"
 
-
 namespace Engine {
 	class Renderer {
 	public:
@@ -11,6 +10,8 @@ namespace Engine {
 		void DrawFrame();
 
 		void WaitForGPUIdle();
+
+		bool SelectedPipeline = false;
 
 	private:
 		VulkanContext m_VkContext;

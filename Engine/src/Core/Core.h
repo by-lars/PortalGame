@@ -23,12 +23,12 @@ namespace Engine {
 
 		Settings Settings;
 		ResourceRegistry Registry;
+		Renderer m_Renderer;
 
 		GLFWwindow* GetWindow();
 		bool IsRunning();
 		static Core& Get();
 	private:
-		Renderer m_Renderer;
 
 		static void OnWindowSizeChangedInternal(GLFWwindow* window, int width, int height);
 		static void OnGLFWError(int code, const char* msg);

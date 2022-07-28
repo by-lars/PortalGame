@@ -47,13 +47,13 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\glm;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\stb;S:\Dev\VulkanSDK\1.2.198.1\Include;$(ProjectDir)ext\vk-bootstrap\src;$(ProjectDir)ext\tinyobjloader;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\glm;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\stb;S:\Dev\VulkanSDK\1.2.198.1\Include;$(ProjectDir)ext\VulkanMemoryAllocator\include;$(ProjectDir)ext\vk-bootstrap\src;$(ProjectDir)ext\tinyobjloader;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\objects\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)ext\glm;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\stb;S:\Dev\VulkanSDK\1.2.198.1\Include;$(ProjectDir)ext\vk-bootstrap\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)ext\glm;$(ProjectDir)ext\glfw\include;$(ProjectDir)ext\stb;S:\Dev\VulkanSDK\1.2.198.1\Include;$(ProjectDir)ext\VulkanMemoryAllocator\include;$(ProjectDir)ext\vk-bootstrap\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -135,7 +135,10 @@
     <ClCompile Include="src\ECS\Scene.cpp" />
     <ClCompile Include="src\ECS\ECSDefs.cpp" />
     <ClCompile Include="src\ECS\Systems\DummySystem.cpp" />
+    <ClCompile Include="src\Graphics\DeletionQueue.cpp" />
     <ClCompile Include="src\Graphics\Renderer.cpp" />
+    <ClCompile Include="src\Graphics\VkMesh.cpp" />
+    <ClCompile Include="src\Graphics\VulkanPipelineBuilder.cpp" />
     <ClCompile Include="src\Util\Camera.cpp" />
     <ClCompile Include="src\Util\StringHelper.cpp" />
     <ClCompile Include="src\Graphics\VulkanContext.cpp" />
@@ -164,31 +167,61 @@
     <ClInclude Include="src\Core\AnyPtr.h" />
     <ClInclude Include="src\Core\Base.h" />
     <ClInclude Include="src\Asset\Registry.h" />
+    <ClInclude Include="src\Graphics\DeletionQueue.h" />
     <ClInclude Include="src\Graphics\Renderer.h" />
+    <ClInclude Include="src\Graphics\VkMesh.h" />
     <ClInclude Include="src\Graphics\VulkanContext.h" />
+    <ClInclude Include="src\Graphics\VulkanPipelineBuilder.h" />
     <ClInclude Include="src\Util\Camera.h" />
     <ClInclude Include="src\Util\StringHelper.h" />
     <ClInclude Include="src\Graphics\VulkanFactory.h" />
     <ClInclude Include="src\Graphics\VulkanHelper.h" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="assets\shader\triangle.frag">
+    <CustomBuild Include="assets\shader\color_triangle.frag">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">glslc.exe %(FullPath) -o $(OutDir)triangle.frag.spv</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Triangle Fragment Shader</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)triangle.frag.spv</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">glslc.exe %(FullPath) -o $(OutDir)triangle.frag.spv</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Triangle Fragment Shader</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)triangle.frag.spv</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">glslc.exe %(FullPath) -o $(OutDir)%(Filename)%(Extension).spv</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Color Triangle Fragment Shader</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename)%(Extension).spv</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">glslc.exe %(FullPath) -o $(OutDir)%(Filename)%(Extension).spv</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Color Triangle Fragment Shader</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)%(Filename)%(Extension).spv</Outputs>
     </CustomBuild>
-    <CustomBuild Include="assets\shader\triangle.vert">
+    <CustomBuild Include="assets\shader\color_triangle.vert">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">glslc.exe %(FullPath) -o $(OutDir)triangle.vert.spv</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Vertex Shader</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)triangle.vert.spv</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">glslc.exe %(FullPath) -o $(OutDir)triangle.vert.spv</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Vertex Shader</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)triangle.vert.spv</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">glslc.exe %(FullPath) -o $(OutDir)%(Filename)%(Extension).spv</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Color Triangle Vertex Shader</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename)%(Extension).spv</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">glslc.exe %(FullPath) -o $(OutDir)%(Filename)%(Extension).spv</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Color Triangle Vertex Shader</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)%(Filename)%(Extension).spv</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="assets\shader\red_triangle.frag">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">glslc.exe %(FullPath) -o $(OutDir)%(Filename)%(Extension).spv</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Red Triangle Fragment Shader</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename)%(Extension).spv</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">glslc.exe %(FullPath) -o $(OutDir)%(Filename)%(Extension).spv</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Red Triangle Fragment Shader</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)%(Filename)%(Extension).spv</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="assets\shader\red_triangle.vert">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">glslc.exe %(FullPath) -o $(OutDir)%(Filename)%(Extension).spv</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Red Triangle Vertex Shader</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename)%(Extension).spv</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">glslc.exe %(FullPath) -o $(OutDir)%(Filename)%(Extension).spv</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Red Triangle Vertex Shader</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)%(Filename)%(Extension).spv</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="assets\shader\triangle_mesh.vert">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">glslc.exe %(FullPath) -o $(OutDir)%(Filename)%(Extension).spv</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">glslc.exe %(FullPath) -o $(OutDir)%(Filename)%(Extension).spv</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Triangle Mesh Vertex Shader</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename)%(Extension).spv</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Triangle Mesh Vertex Shader</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)%(Filename)%(Extension).spv</Outputs>
     </CustomBuild>
     <None Include="ext\glfw\src\mappings.h.in" />
   </ItemGroup>

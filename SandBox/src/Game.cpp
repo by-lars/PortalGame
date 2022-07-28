@@ -41,6 +41,10 @@ public:
 				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 			}
 		}
+
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+			m_Renderer.SelectedPipeline = !m_Renderer.SelectedPipeline;
+		}
 	}
 
 	float lastFrameTime;

@@ -48,7 +48,10 @@ namespace Engine {
 		rpInfo.pClearValues = &clearValue;
 
 		vkCmdBeginRenderPass(cmd, &rpInfo, VK_SUBPASS_CONTENTS_INLINE);
-
+		vkCmdBindPipeline(cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, m_VkContext.MeshPipeline);
+		VkDeviceSize offset = 0;
+		vkCmdBindVertexBuffers(cmd, 0, 1, &m_VkContext.TriangleMesh.VertexBuffer.Buffer, &offset);
+		vkCmdDraw(cmd, m_VkContext.TriangleMesh.Vertecies.size(), 1, 0, 0);
 		vkCmdEndRenderPass(cmd);
 		VK_ABORT_ON_FAIL(vkEndCommandBuffer(cmd), "Could not end Command Buffer");
 
